@@ -473,49 +473,14 @@
 
       
         
-          
-            <p>介紹深度學習的流程、方法，並透過 TensorFlow 及 Keras 來實作。<br>此篇主要介紹深度學習模型 + TensorFlow &amp; Keras 簡介 + 後續實作用的MNIST資料集介紹。</p>
-<h2 id="Ch1"><a href="#Ch1" class="headerlink" title="Ch1"></a>Ch1</h2><h3 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h3><p>機器學習(Machine Learning)訓練的資料會分為兩個部分，為<font color="#FF0000">特徵值(Feature)</font>及<font color="#FF0000">標籤(Label)</font>。<br>其中Feature代表的是資料特徵，如天氣的溫度，通常做為學習時的<font color="#FF0000">輸入(Inputs)</font>;<br>而Label代表的是我們要預測的結果，假設我們對於外來某個時間的天氣預測，晴天為0、雨天為1，則0與1就代表了該天氣資料的Label。</p>
-<h3 id="深度學習"><a href="#深度學習" class="headerlink" title="深度學習"></a>深度學習</h3><p>主要分三大層，分別為<font color="#FF0000">輸入層(Input Layer)</font>，<font color="#FF0000">隱藏層(Hidden Layers)</font>及<font color="#FF0000">輸出層(Output Layer)</font>。</p>
-<p><img src="/images/deep learning.jpg" alt=""></p>
-<p align="center"><font size="1">(圖片來源：<a href="https://www.linkedin.com/pulse/why-convolutioanl-neural-networks-shamane-siriwardhana" target="_blank" rel="noopener">https://www.linkedin.com/pulse/why-convolutioanl-neural-networks-shamane-siriwardhana</a>)</font></p>
-
-<p>輸入層(x)主要接收Data 的 Features 輸入。<br>隱藏層(h1, h2, …., hn)為主要進行學習的地方，可以有多層，並且層層相連(如上圖)。<br>輸出層(y)為經過模型運算後輸出的值，通常訓練時會與資料的實際Label進行比對來評估預測能力或做訓練校正。</p>
-<h2 id="Ch2"><a href="#Ch2" class="headerlink" title="Ch2"></a>Ch2</h2><h3 id="神經傳導"><a href="#神經傳導" class="headerlink" title="神經傳導"></a>神經傳導</h3><p>人的神經傳導是由許多的神經元相連，其中樹突負責接收上一個神經元的輸入，軸突負責將訊息輸出至突觸，再由突觸將訊息傳至下一個神經元(如下圖)。</p>
-<p><img src="/images/nerve_impulse.jpg" alt=""></p>
-<p align="center"><font size="1">(圖片來源：<a href="http://www.hkpe.net/hkdsepe/human_body/neuron.htm" target="_blank" rel="noopener">http://www.hkpe.net/hkdsepe/human_body/neuron.htm</a>)</font></p>
-
-<p><img src="/images/神經元傳導.jpg" alt=""></p>
-<p align="center"><font size="1">(圖片來源：<a href="http://www.cc.ntu.edu.tw/chinese/epaper/0038/20160920_3805.html" target="_blank" rel="noopener">http://www.cc.ntu.edu.tw/chinese/epaper/0038/20160920_3805.html</a>)</font></p>
-
-<p>深度學習模型中的神經元也運用類的方式運作，總和所有輸入(x)與其權重(w)的乘積再加上偏差值(b)，放入<font color="#FF0000">激活函數(Activation function)</font>，如果計算結果大於一臨界值，則繼續傳導，反之則不傳導(如上圖)。<br>y = activation function(x1 * w1 + x2 * w2 + … + xn * wn + b)</p>
-<h3 id="兩種常用的Activation-function"><a href="#兩種常用的Activation-function" class="headerlink" title="兩種常用的Activation function"></a>兩種常用的Activation function</h3><h4 id="Signoid"><a href="#Signoid" class="headerlink" title="Signoid"></a>Signoid</h4><p><img src="/images/sigmoid.png" alt=""></p>
-<p></p><p align="center"><font size="1">(圖片來源：<a href="https://www.linkedin.com/pulse/logistic-regression-sigmoid-function-explained-plain-english-hsu" target="_blank" rel="noopener">https://www.linkedin.com/pulse/logistic-regression-sigmoid-function-explained-plain-english-hsu</a>)</font></p><br>小於臨界值：不反應<br>大於臨界值：開始傳遞<br>大到一定值：反應鈍化<p></p>
-<h4 id="Relu"><a href="#Relu" class="headerlink" title="Relu"></a>Relu</h4><p><img src="/images/relu.png" alt=""></p>
-<p></p><p align="center"><font size="1">(圖片來源：<a href="http://ithelp.ithome.com.tw/articles/10189085" target="_blank" rel="noopener">http://ithelp.ithome.com.tw/articles/10189085</a>)</font></p><br>小於臨界值：不反應<br>大於臨界值：開始傳遞<p></p>
-<h3 id="利用反向推播演算法-Back-Propagation-訓練模型"><a href="#利用反向推播演算法-Back-Propagation-訓練模型" class="headerlink" title="利用反向推播演算法(Back Propagation)訓練模型"></a>利用反向推播演算法(Back Propagation)訓練模型</h3><p><img src="/images/Back_Propagation.jpg" alt=""></p>
-<ol>
-<li>資料預處理：Data → Feature + Label<br>建立模型：Hidden Layers, Weight. Bias, Input and Output units…</li>
-<li>常見的Loss Function - Cross Entropy<br>Loss Function用來計算 Labels 與 Outputs (預測結果)之間的誤差。<br>[補]<font color="#FF0000">One-hot Encoding</font>：計算 Cross Entropy 所需進行的轉換，把Features 的 Labels 改為以位置表示。<br>例如：feature1 = [ A , B ] , feature2 = [ X , Y , Z ] , sample = [ A , Z ] → A 對應 [ 1 , 0 ] , Z 對應 [ 0 , 0 , 1 ] → sample = [ 1 , 0 , 0 , 0 , 1 ]</li>
-<li>Optimizer<br>用來修正 Weight 及 Bias 以降低誤差值。<br>常使用梯度下降法(Stochastic Gradient Descent, SGD)：感測誤差下降的梯度，每次沿誤差下降的方向走，經多次訓練之後使誤差最小化。<br>參考：<a href="http://www.denizyuret.com/2015/03/alec-radfords-animations-for.html" target="_blank" rel="noopener">http://www.denizyuret.com/2015/03/alec-radfords-animations-for.html</a></li>
-</ol>
-<h2 id="Ch3"><a href="#Ch3" class="headerlink" title="Ch3"></a>Ch3</h2><h3 id="TensorFlow"><a href="#TensorFlow" class="headerlink" title="TensorFlow"></a>TensorFlow</h3><p>TensorFlow的目的是為了讓矩陣運算達到最高效能，並且能在不同平台運行。<br>Tensor(張量)：是一個可用來表示在一些向量、純量和其他張量之間的線性關係的多線性函數。0階張量為純量、1階張量為向量、2階張量為矩陣。<br>Flow(資料流程)：以模組建立「計算圖」，支援不同語言、平台。</p>
-<h3 id="計算圖-Computational-Graph"><a href="#計算圖-Computational-Graph" class="headerlink" title="計算圖(Computational Graph)"></a>計算圖(Computational Graph)</h3><p><img src="/images/641.jpg" alt=""></p>
-<p></p><p align="center"><font size="1">(圖片來源：<a href="http://www.ifuun.com/a20176183085601/" target="_blank" rel="noopener">http://www.ifuun.com/a20176183085601/</a>)</font></p><br>Node - 運算<br>Edge - Tensor的資料流<p></p>
-<h3 id="TensorFlow程式設計模式"><a href="#TensorFlow程式設計模式" class="headerlink" title="TensorFlow程式設計模式"></a>TensorFlow程式設計模式</h3><ol>
-<li>建立Computational Graph</li>
-<li>執行Computational Graph：建立Session以連結用戶端與執行裝置。</li>
-</ol>
-<h3 id="Keras高階程式庫-API"><a href="#Keras高階程式庫-API" class="headerlink" title="Keras高階程式庫(API)"></a>Keras高階程式庫(API)</h3><p><img src="/images/keras.jpg" alt=""><br>Keras 可以運行在 TensorFlow 或 Theano 的環境上，目的在建立模型的方便性，實際背後的運算還是使用 TensorFlow 或 Theano。</p>
-<h3 id="Keras程式設計模式"><a href="#Keras程式設計模式" class="headerlink" title="Keras程式設計模式"></a>Keras程式設計模式</h3><ol>
-<li>建立Sequential model：多個神經網路層的線性堆疊</li>
-<li>Add input layer and hidden layers</li>
-<li>Add output layer</li>
-</ol>
-<h2 id="Ch4-6"><a href="#Ch4-6" class="headerlink" title="Ch4~6"></a>Ch4~6</h2><h3 id="Download"><a href="#Download" class="headerlink" title="Download"></a>Download</h3><p>使用語言：Python<br>Step1 下載安裝 Anaconda (<a href="https://www.anaconda.com/download/" target="_blank" rel="noopener">https://www.anaconda.com/download/</a>)<br>Step2 開啟Anaconda Prompt 使用 pip install 安裝需要的套件<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip install virtualenv       <span class="comment">#建立虛擬環境用</span></span><br><span class="line">pip install tensorflow       </span><br><span class="line">pip install keras</span><br></pre></td></tr></table></figure><br>Step3 開啟jupyter notebook：Anaconda Prompt 中輸入 jupyter notebook<br>Step4 載入所需套件<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np                       <span class="comment">#處理矩陣常用的套件</span></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd                      <span class="comment">#處理data常用的套件</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt          <span class="comment">#繪圖常用套件</span></span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf                            </span><br><span class="line"><span class="keyword">from</span> keras.(模組名稱) <span class="keyword">import</span> (套件名稱)    <span class="comment">#完成後會看到keras以tensorflow為後台運行的提示</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="MNIST"><a href="#MNIST" class="headerlink" title="MNIST"></a>MNIST</h3><p>為後續介紹MLP及CNN所用的測試資料集，該資料集為手寫數字的資料集．它包含了一連串的手寫數字圖片，並且有相對應的數字。<br>可以透過Keras直接下載：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.datasets <span class="keyword">import</span> mnist</span><br></pre></td></tr></table></figure><br>MNIST 資料集分成三個部分<br>55,000 筆的 training data (mnist.train)<br>10,000 筆的 test data (mnist.test)<br>5,000 筆的 validation data (mnist.validation)</p>
-
-          
+          <p>介紹深度學習的流程、方法，並透過 TensorFlow 及 Keras 來實作。<br>此篇主要介紹深度學習模型 + TensorFlow &amp; Keras 簡介 + 後續實作用的MNIST資料集介紹。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/30/TensorFlow-Keras-深度學習1/#more" rel="contents">
+              閱讀全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
