@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="介紹深度學習的流程、方法，並透過 TensorFlow 及 Keras 來實作。此篇主要介紹深度學習模型 + TensorFlow &amp;amp; Keras 簡介 + 後續實作用的MNIST資料集介紹。">
+<meta name="description" content="介紹深度學習的流程、方法，並透過 TensorFlow 及 Keras 來實作。此篇主要介紹深度學習模型 + TensorFlow &amp;amp; Keras 簡介 + 後續實作用的MNIST資料集介紹。參考自：1.TensorFlow+Keras深度學習人工智慧實務應用/ 林大貴/碩博出版社">
 <meta name="keywords" content="深度學習,Keras,Tensorflow">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TensorFlow + Keras 深度學習1">
+<meta property="og:title" content="TensorFlow + Keras 深度學習筆記1">
 <meta property="og:url" content="http://yoursite.com/2018/01/30/TensorFlow-Keras-深度學習1/index.html">
 <meta property="og:site_name" content="暖陽春草">
-<meta property="og:description" content="介紹深度學習的流程、方法，並透過 TensorFlow 及 Keras 來實作。此篇主要介紹深度學習模型 + TensorFlow &amp;amp; Keras 簡介 + 後續實作用的MNIST資料集介紹。">
+<meta property="og:description" content="介紹深度學習的流程、方法，並透過 TensorFlow 及 Keras 來實作。此篇主要介紹深度學習模型 + TensorFlow &amp;amp; Keras 簡介 + 後續實作用的MNIST資料集介紹。參考自：1.TensorFlow+Keras深度學習人工智慧實務應用/ 林大貴/碩博出版社">
 <meta property="og:locale" content="zh-tw">
 <meta property="og:image" content="http://yoursite.com/images/deep%20learning.jpg">
 <meta property="og:image" content="http://yoursite.com/images/nerve_impulse.jpg">
@@ -95,10 +95,10 @@
 <meta property="og:image" content="http://yoursite.com/images/Back_Propagation.jpg">
 <meta property="og:image" content="http://yoursite.com/images/641.jpg">
 <meta property="og:image" content="http://yoursite.com/images/keras.jpg">
-<meta property="og:updated_time" content="2018-01-30T16:36:52.607Z">
+<meta property="og:updated_time" content="2018-01-31T15:34:41.442Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TensorFlow + Keras 深度學習1">
-<meta name="twitter:description" content="介紹深度學習的流程、方法，並透過 TensorFlow 及 Keras 來實作。此篇主要介紹深度學習模型 + TensorFlow &amp;amp; Keras 簡介 + 後續實作用的MNIST資料集介紹。">
+<meta name="twitter:title" content="TensorFlow + Keras 深度學習筆記1">
+<meta name="twitter:description" content="介紹深度學習的流程、方法，並透過 TensorFlow 及 Keras 來實作。此篇主要介紹深度學習模型 + TensorFlow &amp;amp; Keras 簡介 + 後續實作用的MNIST資料集介紹。參考自：1.TensorFlow+Keras深度學習人工智慧實務應用/ 林大貴/碩博出版社">
 <meta name="twitter:image" content="http://yoursite.com/images/deep%20learning.jpg">
 
 
@@ -135,7 +135,7 @@
 
 
 
-  <title>TensorFlow + Keras 深度學習1 | 暖陽春草</title>
+  <title>TensorFlow + Keras 深度學習筆記1 | 暖陽春草</title>
   
 
 
@@ -289,7 +289,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">TensorFlow + Keras 深度學習1</h1>
+          <h1 class="post-title" itemprop="name headline">TensorFlow + Keras 深度學習筆記1</h1>
         
 
         <div class="post-meta">
@@ -361,7 +361,7 @@
       
 
       
-        <p>介紹深度學習的流程、方法，並透過 TensorFlow 及 Keras 來實作。<br>此篇主要介紹深度學習模型 + TensorFlow &amp; Keras 簡介 + 後續實作用的MNIST資料集介紹。<br><a id="more"></a></p>
+        <p>介紹深度學習的流程、方法，並透過 TensorFlow 及 Keras 來實作。<br>此篇主要介紹深度學習模型 + TensorFlow &amp; Keras 簡介 + 後續實作用的MNIST資料集介紹。<br>參考自：<br>1.TensorFlow+Keras深度學習人工智慧實務應用/ 林大貴/碩博出版社<br><a id="more"></a></p>
 <h2 id="Ch1"><a href="#Ch1" class="headerlink" title="Ch1"></a>Ch1</h2><h3 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h3><p>機器學習(Machine Learning)訓練的資料會分為兩個部分，為<font color="#FF0000">特徵值(Feature)</font>及<font color="#FF0000">標籤(Label)</font>。<br>其中Feature代表的是資料特徵，如天氣的溫度，通常做為學習時的<font color="#FF0000">輸入(Inputs)</font>;<br>而Label代表的是我們要預測的結果，假設我們對於外來某個時間的天氣預測，晴天為0、雨天為1，則0與1就代表了該天氣資料的Label。</p>
 <h3 id="深度學習"><a href="#深度學習" class="headerlink" title="深度學習"></a>深度學習</h3><p>主要分三大層，分別為<font color="#FF0000">輸入層(Input Layer)</font>，<font color="#FF0000">隱藏層(Hidden Layers)</font>及<font color="#FF0000">輸出層(Output Layer)</font>。</p>
 <p><img src="/images/deep learning.jpg" alt=""></p>
@@ -441,8 +441,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/01/31/TensorFlow-Keras-深度學習2/" rel="prev" title="TensorFlow + Keras 深度學習2">
-                TensorFlow + Keras 深度學習2 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/01/31/TensorFlow-Keras-深度學習2/" rel="prev" title="TensorFlow + Keras 深度學習筆記2">
+                TensorFlow + Keras 深度學習筆記2 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -524,7 +524,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -534,10 +534,10 @@
               
               
               <div class="site-state-item site-state-categories">
-                
+                <a href="/categories/index.html">
                   <span class="site-state-item-count">1</span>
                   <span class="site-state-item-name">分類</span>
-                
+                </a>
               </div>
             
 
@@ -545,10 +545,10 @@
               
               
               <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">3</span>
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">標籤</span>
-                
+                </a>
               </div>
             
 
@@ -556,6 +556,40 @@
 
           
 
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yoga0115" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/820115Yoga" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.linkedin.com/in/%E7%A5%90%E5%98%89-%E9%99%B3-862620155/" target="_blank" title="linkedin">
+                      
+                        <i class="fa fa-fw fa-globe"></i>linkedin</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/yoga820115" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Facebook</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="yoga820115@gmail.com" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Google</a>
+                  </span>
+                
+            </div>
           
 
           

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="深度學習,Keras,MLP,CNN," />
 
 
 
@@ -79,17 +79,27 @@
 
 
 
-<meta name="description" content="Divide and Conquer.">
+<meta name="description" content="介紹深度學習的流程、方法，並透過 TensorFlow 及 Keras 來實作。此篇主要介紹透過 Keras 實作 MLP 及 CNN 兩種深度學習模型。參考自：1.TensorFlow+Keras深度學習人工智慧實務應用/ 林大貴/碩博出版社2.https://puremonkey2010.blogspot.tw/2017/07/toolkit-keras-mnist-cnn.html">
+<meta name="keywords" content="深度學習,Keras,MLP,CNN">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TensorFlow + Keras 深度學習2">
+<meta property="og:title" content="TensorFlow + Keras 深度學習筆記2">
 <meta property="og:url" content="http://yoursite.com/2018/01/31/TensorFlow-Keras-深度學習2/index.html">
 <meta property="og:site_name" content="暖陽春草">
-<meta property="og:description" content="Divide and Conquer.">
+<meta property="og:description" content="介紹深度學習的流程、方法，並透過 TensorFlow 及 Keras 來實作。此篇主要介紹透過 Keras 實作 MLP 及 CNN 兩種深度學習模型。參考自：1.TensorFlow+Keras深度學習人工智慧實務應用/ 林大貴/碩博出版社2.https://puremonkey2010.blogspot.tw/2017/07/toolkit-keras-mnist-cnn.html">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:updated_time" content="2018-01-30T16:34:07.984Z">
+<meta property="og:image" content="http://yoursite.com/images/MLP.jpg">
+<meta property="og:image" content="http://yoursite.com/images/3946_4.PNG">
+<meta property="og:image" content="http://yoursite.com/images/3946.PNG">
+<meta property="og:image" content="http://yoursite.com/images/overfitting.png">
+<meta property="og:image" content="http://yoursite.com/images/confu2.PNG">
+<meta property="og:image" content="http://yoursite.com/images/3812.png">
+<meta property="og:image" content="http://yoursite.com/images/3591.PNG">
+<meta property="og:image" content="http://yoursite.com/images/3.PNG">
+<meta property="og:updated_time" content="2018-01-31T15:48:06.874Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TensorFlow + Keras 深度學習2">
-<meta name="twitter:description" content="Divide and Conquer.">
+<meta name="twitter:title" content="TensorFlow + Keras 深度學習筆記2">
+<meta name="twitter:description" content="介紹深度學習的流程、方法，並透過 TensorFlow 及 Keras 來實作。此篇主要介紹透過 Keras 實作 MLP 及 CNN 兩種深度學習模型。參考自：1.TensorFlow+Keras深度學習人工智慧實務應用/ 林大貴/碩博出版社2.https://puremonkey2010.blogspot.tw/2017/07/toolkit-keras-mnist-cnn.html">
+<meta name="twitter:image" content="http://yoursite.com/images/MLP.jpg">
 
 
 
@@ -125,7 +135,7 @@
 
 
 
-  <title>TensorFlow + Keras 深度學習2 | 暖陽春草</title>
+  <title>TensorFlow + Keras 深度學習筆記2 | 暖陽春草</title>
   
 
 
@@ -279,7 +289,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">TensorFlow + Keras 深度學習2</h1>
+          <h1 class="post-title" itemprop="name headline">TensorFlow + Keras 深度學習筆記2</h1>
         
 
         <div class="post-meta">
@@ -301,6 +311,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/深度學習/" itemprop="url" rel="index">
+                    <span itemprop="name">深度學習</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -329,7 +361,113 @@
       
 
       
-        
+        <p>介紹深度學習的流程、方法，並透過 TensorFlow 及 Keras 來實作。<br>此篇主要介紹透過 Keras 實作 MLP 及 CNN 兩種深度學習模型。<br>參考自：<br>1.TensorFlow+Keras深度學習人工智慧實務應用/ 林大貴/碩博出版社<br>2.<a href="https://puremonkey2010.blogspot.tw/2017/07/toolkit-keras-mnist-cnn.html" target="_blank" rel="noopener">https://puremonkey2010.blogspot.tw/2017/07/toolkit-keras-mnist-cnn.html</a><br><a id="more"></a></p>
+<h2 id="Ch7"><a href="#Ch7" class="headerlink" title="Ch7"></a>Ch7</h2><h3 id="用-Keras-建立多層感知器模型-Multilayer-perceptron-MLP"><a href="#用-Keras-建立多層感知器模型-Multilayer-perceptron-MLP" class="headerlink" title="用 Keras 建立多層感知器模型(Multilayer perceptron, MLP)"></a>用 Keras 建立多層感知器模型(Multilayer perceptron, MLP)</h3><p><img src="/images/MLP.jpg" alt=""></p>
+<p>將 28 x 28 的手寫數字圖，轉換為 784 個單位的一維資料作為模型輸入，經過隱藏層的訓練，最後輸出為 0~9 的預測結果。<br>以下說明各步驟的細部處理。</p>
+<h3 id="預處理Data"><a href="#預處理Data" class="headerlink" title="預處理Data"></a>預處理Data</h3><h4 id="Step1-匯入模組"><a href="#Step1-匯入模組" class="headerlink" title="Step1 匯入模組"></a>Step1 匯入模組</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> keras.utils <span class="keyword">import</span> np_utils  <span class="comment"># 用來後續將 label 標籤轉為 one-hot-encoding</span></span><br><span class="line">np.random.seed(<span class="number">10</span>)</span><br><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Dense</span><br></pre></td></tr></table></figure>
+<h4 id="Step2-讀取資料"><a href="#Step2-讀取資料" class="headerlink" title="Step2 讀取資料"></a>Step2 讀取資料</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.datasets <span class="keyword">import</span> mnist <span class="comment"># 下載資料</span></span><br><span class="line">(X_train_image, y_train_label), (X_test_image, y_test_label) = mnist.load_data()  <span class="comment"># 讀取資料</span></span><br></pre></td></tr></table></figure>
+<h4 id="Step3-將-Feature-28-x-28-圖-轉為-float"><a href="#Step3-將-Feature-28-x-28-圖-轉為-float" class="headerlink" title="Step3 將 Feature ( 28 x 28 圖)轉為 float"></a>Step3 將 Feature ( 28 x 28 圖)轉為 float</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x_Test = X_test_image.reshape(<span class="number">10000</span>, <span class="number">28</span>*<span class="number">28</span>).astype(<span class="string">'float32'</span>)</span><br><span class="line">x_Train = X_train_image.reshape(<span class="number">60000</span>, <span class="number">28</span>*<span class="number">28</span>).astype(<span class="string">'float32'</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="Step4-標準化Feature"><a href="#Step4-標準化Feature" class="headerlink" title="Step4 標準化Feature"></a>Step4 標準化Feature</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x_Test_norm = x_Test/<span class="number">255</span></span><br><span class="line">x_Train_norm = x_Train/<span class="number">255</span></span><br></pre></td></tr></table></figure>
+<h4 id="Step5-Label-轉為-One-hot-encoding"><a href="#Step5-Label-轉為-One-hot-encoding" class="headerlink" title="Step5 Label 轉為 One-hot encoding"></a>Step5 Label 轉為 One-hot encoding</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">y_TrainOneHot = np_utils.to_categorical(y_train_label) <span class="comment"># 將 training 的 label 進行 one-hot encoding</span></span><br><span class="line">y_TestOneHot = np_utils.to_categorical(y_test_label) <span class="comment"># 將測試的 labels 進行 one-hot encoding</span></span><br></pre></td></tr></table></figure>
+<h3 id="建立Model"><a href="#建立Model" class="headerlink" title="建立Model"></a>建立Model</h3><h4 id="Step1-建立Sequential"><a href="#Step1-建立Sequential" class="headerlink" title="Step1 建立Sequential"></a>Step1 建立Sequential</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model = Sequential()  <span class="comment"># Build Linear Model</span></span><br></pre></td></tr></table></figure>
+<p>概念類似建立model的架子，接下來的Dense則是把一層一層的內容填進去。</p>
+<h4 id="Step2-用Dense建立隱藏層"><a href="#Step2-用Dense建立隱藏層" class="headerlink" title="Step2 用Dense建立隱藏層"></a>Step2 用Dense建立隱藏層</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.add(Dense(units=<span class="number">256</span>, input_dim=<span class="number">784</span>, kernel_initializer=<span class="string">'normal'</span>, activation=<span class="string">'relu'</span>)) <span class="comment"># Add Input/hidden layer</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>units為該曾有多少個神經元</li>
+<li>input_dim為輸入的資料元(上一層的輸出)</li>
+<li>kernel_initializer為weight及bias的初始化方案normal代表是以常態分配初始化</li>
+<li>activation指激活函數</li>
+</ul>
+<h4 id="Step3-用Dense建立輸出層"><a href="#Step3-用Dense建立輸出層" class="headerlink" title="Step3 用Dense建立輸出層"></a>Step3 用Dense建立輸出層</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.add(Dense(units=<span class="number">10</span>, kernel_initializer=<span class="string">'normal'</span>, activation=<span class="string">'softmax'</span>)) <span class="comment"># Add Hidden/output layer</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>softmax激活函數將輸出結果轉為每個數字的預測機率</li>
+</ul>
+<h4 id="Step4-查看模型摘要"><a href="#Step4-查看模型摘要" class="headerlink" title="Step4 查看模型摘要"></a>Step4 查看模型摘要</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.summary()</span><br></pre></td></tr></table></figure>
+<p><img src="/images/3946_4.PNG" alt=""></p>
+<p align="center"><font size="1">(圖片來源：<a href="https://puremonkey2010.blogspot.tw/2017/06/toolkit-keras-mnist.html" target="_blank" rel="noopener">https://puremonkey2010.blogspot.tw/2017/06/toolkit-keras-mnist.html</a>)</font></p>
+
+<ul>
+<li>Total Params (模型總參數)：每次會更新的 weight &amp; bias ，越大代表模型越複雜</li>
+<li>Param = input_dim * 本層 units + 本層 units</li>
+<li>[補] hyper-parameters (超參數)：model中可調的參數，例如：learning rate、正則化系數、mini-batch size、網路的層數、每一层的neurons個數等等</li>
+</ul>
+<h3 id="進行訓練"><a href="#進行訓練" class="headerlink" title="進行訓練"></a>進行訓練</h3><h4 id="Step1-定義訓練方式"><a href="#Step1-定義訓練方式" class="headerlink" title="Step1 定義訓練方式"></a>Step1 定義訓練方式</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.compile(loss=<span class="string">'categorical_crossentropy'</span>, optimizer=<span class="string">'adam'</span>, metrics=[<span class="string">'accuracy'</span>])</span><br></pre></td></tr></table></figure>
+<ul>
+<li>loss: 設定 loss function, 在深度學習通常使用 cross_entropy (Cross entropy) 交叉摘順練效果較好</li>
+<li>optimizer: 設定訓練時的優化方法, 在深度學習使用 adam 可以讓訓練更快收斂, 並提高準確率</li>
+<li>metrics: 設定評估模型的方式是 accuracy (準確率)</li>
+</ul>
+<h4 id="Step2-開始訓練"><a href="#Step2-開始訓練" class="headerlink" title="Step2 開始訓練"></a>Step2 開始訓練</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train_history = model.fit(x=x_Train_norm, y=y_TrainOneHot, validation_split=<span class="number">0.2</span>, epochs=<span class="number">10</span>, batch_size=<span class="number">200</span>, verbose=<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>x=x_Train_norm： features 數字的影像特徵值 (60,000 x 784 的陣列)，輸入需為numpy array</li>
+<li>y=y_Train_OneHot： label 數字的 One-hot encoding 陣列 (60,000 x 10 的陣列)，輸入需為numpy array</li>
+<li>validation_split = 0.2： 設定訓練資料與 cross validation 的資料比率，也就是說會有 0.8 <em> 60,000 = 48,000 作為訓練資料；0.2 </em> 60,000 = 12,000 作為驗證資料</li>
+<li>epochs = 10：執行 10 次的訓練週期</li>
+<li>batch_size = 200： 每一批次的訓練筆數為 200</li>
+<li>verbose = 2： 顯示訓練過程，共執行 10 次 epoch (訓練週期)，每批 200 筆，也就是每次會有 240 round (48,000 / 200 = 240)，每一次的 epoch 會計算 accuracy 並記錄在 train_history 中。(1為顯示進度條，0為不顯示)</li>
+</ul>
+<h4 id="Step3-查看訓練結果"><a href="#Step3-查看訓練結果" class="headerlink" title="Step3 查看訓練結果"></a>Step3 查看訓練結果</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show_train_history</span><span class="params">(train_history, train, validation)</span>:</span></span><br><span class="line">    plt.plot(train_history.history[train])</span><br><span class="line">    plt.plot(train_history.history[validation])</span><br><span class="line">    plt.title(<span class="string">'Train History'</span>)</span><br><span class="line">    plt.ylabel(train)</span><br><span class="line">    plt.xlabel(<span class="string">'Epoch'</span>)</span><br><span class="line">    plt.legend([<span class="string">'train'</span>, <span class="string">'validation'</span>], loc=<span class="string">'upper left'</span>)</span><br><span class="line">    plt.show()</span><br><span class="line">show_train_history(train_history, <span class="string">'acc'</span>, <span class="string">'val_acc'</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/images/3946.PNG" alt=""></p>
+<ul>
+<li>一般而言，訓練後期測試資料會較驗證資料的準確率高，但若兩者之間的距離過大時，代表有可能有<font color="#FF0000">過度擬合(Overfitting)</font>的現象<br>[補] <font color="#FF0000">Overfitting</font>：即過度適應訓練資料中特化且隨機的特徵，會使訓練時的準確率變高，但對未知資料的準確率變低。</li>
+</ul>
+<p><img src="/images/overfitting.png" alt=""></p>
+<p align="center"><font size="1">(圖片來源：<a href="https://www.quora.com/Which-signals-do-indicate-that-the-convolutional-neural-network-is-overfitted" target="_blank" rel="noopener">https://www.quora.com/Which-signals-do-indicate-that-the-convolutional-neural-network-is-overfitted</a>)</font></p>
+
+<ul>
+<li>加入<font color="#FF0000">DropOut</font>可以有效避免Overfitting</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Dene, Dropout <span class="comment">#import DropOut module</span></span><br><span class="line"></span><br><span class="line">model = Sequential()</span><br><span class="line">model.add(Dense(units=<span class="number">256</span>, input_dim=<span class="number">784</span>, kernel_initializer=<span class="string">'normal'</span>, activation=<span class="string">'relu'</span>))</span><br><span class="line">model.add(Dropout(<span class="number">0.5</span>)) <span class="comment">#Add DropOut layer</span></span><br><span class="line">model.add(Dense(units=<span class="number">10</span>, kernel_initializer=<span class="string">'normal'</span>, activation=<span class="string">'softmax'</span>))</span><br></pre></td></tr></table></figure>
+<p>DropOut會在每輪更新時隨機選擇<font color="#FF0000">一定比例的節點拋棄</font>，通常會加在model的輸入及隱藏層後。</p>
+<h3 id="評估準確率"><a href="#評估準確率" class="headerlink" title="評估準確率"></a>評估準確率</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scores = model.evaluate(x_Test_norm, y_TestOneHot)</span><br><span class="line">print(<span class="string">"\t[Info] Accuracy of testing data = &#123;:2.1f&#125;%"</span>.format(scores[<span class="number">1</span>]*<span class="number">100.0</span>))</span><br></pre></td></tr></table></figure>
+<ul>
+<li>回傳結果：[Info] Accuracy of testing data = 97.6%</li>
+</ul>
+<h3 id="預測結果"><a href="#預測結果" class="headerlink" title="預測結果"></a>預測結果</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">prediction = model.predict_classes(x_Test_norm)  <span class="comment"># Making prediction and save result to prediction</span></span><br></pre></td></tr></table></figure>
+<p>後續可以利用Pandas的crosstab建立混淆矩陣，觀察結果與實際Label的比較</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">"\t [Info] Display Confusion Matrix:"</span>)</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">print(<span class="string">"%s\n"</span> %pd.crosstab(y_test_label, prediction, rownames = [<span class="string">'label'</span>], columnes = [<span class="string">'predict'</span>]))</span><br></pre></td></tr></table></figure>
+<p><img src="/images/confu2.PNG" alt=""></p>
+<h2 id="Ch8"><a href="#Ch8" class="headerlink" title="Ch8"></a>Ch8</h2><h3 id="卷積神經網路-convolutional-neural-network-CNN-簡介"><a href="#卷積神經網路-convolutional-neural-network-CNN-簡介" class="headerlink" title="卷積神經網路(convolutional neural network, CNN)簡介"></a>卷積神經網路(convolutional neural network, CNN)簡介</h3><ul>
+<li>影像特徵提取 →完全連結神經網路</li>
+<li>影像特徵提取：卷積層1 → 池化層1 → 卷積層2 → 池化層2 → …… → 卷積層n → 池化層n</li>
+<li>完全連結神經網路：平坦層 → 隱藏層(1~k) → 輸出層<br>在把圖像放入隱藏層學習前，透過卷積與池化的過程提取影像的特徵，提取完畢後再將資料透過平坦層輸入到隱藏層訓練。</li>
+</ul>
+<p><img src="/images/3812.png" alt=""></p>
+<p align="center"><font size="1">(圖片來源：<a href="https://puremonkey2010.blogspot.tw/2017/07/toolkit-keras-mnist-cnn.html" target="_blank" rel="noopener">https://puremonkey2010.blogspot.tw/2017/07/toolkit-keras-mnist-cnn.html</a>)</font></p>
+
+<h3 id="卷積運算-卷積層"><a href="#卷積運算-卷積層" class="headerlink" title="卷積運算(卷積層)"></a>卷積運算(卷積層)</h3><p>卷積運算的原理是將一個影像透過卷積運算的 Filter weight(s) 產生多個影像<br><img src="/images/3591.PNG" alt=""></p>
+<p align="center"><font size="1">(圖片來源：<a href="https://puremonkey2010.blogspot.tw/2017/07/toolkit-keras-mnist-cnn.html" target="_blank" rel="noopener">https://puremonkey2010.blogspot.tw/2017/07/toolkit-keras-mnist-cnn.html</a>)</font></p>
+
+<h3 id="Max-Pool運算-池化層"><a href="#Max-Pool運算-池化層" class="headerlink" title="Max-Pool運算(池化層)"></a>Max-Pool運算(池化層)</h3><p>Max-Pool 運算可以將影像縮減取樣 (downsampling)<br><img src="/images/3.PNG" alt=""></p>
+<p align="center"><font size="1">(圖片來源：<a href="https://puremonkey2010.blogspot.tw/2017/07/toolkit-keras-mnist-cnn.html" target="_blank" rel="noopener">https://puremonkey2010.blogspot.tw/2017/07/toolkit-keras-mnist-cnn.html</a>)</font></p>
+
+<p>縮減取樣的好處：</p>
+<ul>
+<li>減少需要處理的資料點：減少後續運算所需時間</li>
+<li>讓影像位置的差異變小：例如手寫數字 7，位置上下左右可能不同，但是位置不同可能影響辨識，減少影像大小讓數字的位置差異變小</li>
+<li>參數的數量和計算量下降：這在一定程度上也控制了 Overfitting 的狀況</li>
+</ul>
+<h3 id="CNN實作"><a href="#CNN實作" class="headerlink" title="CNN實作"></a>CNN實作</h3><h4 id="Step1-資料預處理"><a href="#Step1-資料預處理" class="headerlink" title="Step1 資料預處理"></a>Step1 資料預處理</h4><ul>
+<li>MLP 的處理將 28 x 28 的圖像轉為 784 個 float32 : image reshape (60000, 784)</li>
+<li>CNN 的處理將轉為 <font color="#FF0000">28 x 28 x 1 (單色)</font> 的四維矩陣 : image reshape (60000, 28, 28, 1)</li>
+<li>同樣進行標準化及One-hot encoding</li>
+</ul>
+<h4 id="Step2-模型建立"><a href="#Step2-模型建立" class="headerlink" title="Step2 模型建立"></a>Step2 模型建立</h4><p>建立卷積層 ( CN ) 及池化層 ( Max-Pool )</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Dense,Dropout,Flatten,Conv2D,MaxPooling2D</span><br><span class="line"></span><br><span class="line">model = Sequential()</span><br><span class="line"><span class="comment">#Create CN layer 1</span></span><br><span class="line">model.add(Conv2D(filters=<span class="number">16</span>,</span><br><span class="line">kernel_size=(<span class="number">5</span>,<span class="number">5</span>),</span><br><span class="line">padding=<span class="string">'same'</span>,</span><br><span class="line">input_shape=(<span class="number">28</span>,<span class="number">28</span>,<span class="number">1</span>),</span><br><span class="line">activation=<span class="string">'relu'</span>))</span><br><span class="line"><span class="comment">#Create Max-Pool 1</span></span><br><span class="line">model.add(MaxPooling2D(pool_size=(<span class="number">2</span>,<span class="number">2</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment">#Create CN layer 2</span></span><br><span class="line">model.add(Conv2D(filters=<span class="number">36</span>,</span><br><span class="line">kernel_size=(<span class="number">5</span>,<span class="number">5</span>),</span><br><span class="line">padding=<span class="string">'same'</span>,</span><br><span class="line">input_shape=(<span class="number">28</span>,<span class="number">28</span>,<span class="number">1</span>),</span><br><span class="line">activation=<span class="string">'relu'</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">#Create Max-Pool 2</span></span><br><span class="line">model.add(MaxPooling2D(pool_size=(<span class="number">2</span>,<span class="number">2</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment">#Add Dropout layer</span></span><br><span class="line">model.add(Dropout(<span class="number">0.25</span>))</span><br></pre></td></tr></table></figure>
+<p>建立平坦層→隱藏層→輸出層</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">model.add(Flatten())</span><br><span class="line">model.add(Dense(<span class="number">128</span>, activation=<span class="string">'relu'</span>))</span><br><span class="line">model.add(Dropout(<span class="number">0.5</span>))</span><br><span class="line">model.add(Dense(<span class="number">10</span>, activation=<span class="string">'softmax'</span>))</span><br></pre></td></tr></table></figure>
+<h4 id="Step3-Training"><a href="#Step3-Training" class="headerlink" title="Step3 Training"></a>Step3 Training</h4><h4 id="Step4-Evaluate"><a href="#Step4-Evaluate" class="headerlink" title="Step4 Evaluate"></a>Step4 Evaluate</h4><h4 id="Step5-Prediction"><a href="#Step5-Prediction" class="headerlink" title="Step5  Prediction"></a>Step5  Prediction</h4><h4 id="Step6-Confusion-matrix"><a href="#Step6-Confusion-matrix" class="headerlink" title="Step6 Confusion matrix"></a>Step6 Confusion matrix</h4><h4 id="Same-as-MLP"><a href="#Same-as-MLP" class="headerlink" title="Same as MLP"></a>Same as MLP</h4><h2 id="Ch10"><a href="#Ch10" class="headerlink" title="Ch10"></a>Ch10</h2><h3 id="Model訓練過程中的儲存與載入"><a href="#Model訓練過程中的儲存與載入" class="headerlink" title="Model訓練過程中的儲存與載入"></a>Model訓練過程中的儲存與載入</h3><p>如果模型太大，要訓練的參數太多時</p>
+<ol>
+<li>設定epochs不要設定太多</li>
+<li>training前重新載入weights</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    model.load_weights(<span class="string">"SaveModel.h5"</span>)</span><br><span class="line">    print(<span class="string">"success"</span>)</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"Start training"</span>)</span><br></pre></td></tr></table></figure>
+<ol>
+<li>trainning完後儲存weights</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.save_weights(<span class="string">"SaveModel.h5"</span>)</span><br></pre></td></tr></table></figure>
+<p>防止訓練過程因中斷而前功盡棄。</p>
+
       
     </div>
     
@@ -344,6 +482,18 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/深度學習/" rel="tag"># 深度學習</a>
+          
+            <a href="/tags/Keras/" rel="tag"># Keras</a>
+          
+            <a href="/tags/MLP/" rel="tag"># MLP</a>
+          
+            <a href="/tags/CNN/" rel="tag"># CNN</a>
+          
+        </div>
+      
 
       
       
@@ -353,8 +503,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/01/30/TensorFlow-Keras-深度學習1/" rel="next" title="TensorFlow + Keras 深度學習1">
-                <i class="fa fa-chevron-left"></i> TensorFlow + Keras 深度學習1
+              <a href="/2018/01/30/TensorFlow-Keras-深度學習1/" rel="next" title="TensorFlow + Keras 深度學習筆記1">
+                <i class="fa fa-chevron-left"></i> TensorFlow + Keras 深度學習筆記1
               </a>
             
           </div>
@@ -362,6 +512,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/31/TensorFlow-Keras-深度學習3/" rel="prev" title="TensorFlow + Keras 深度學習筆記3">
+                TensorFlow + Keras 深度學習筆記3 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -413,8 +567,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概覽
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -433,7 +596,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -443,10 +606,10 @@
               
               
               <div class="site-state-item site-state-categories">
-                
+                <a href="/categories/index.html">
                   <span class="site-state-item-count">1</span>
                   <span class="site-state-item-name">分類</span>
-                
+                </a>
               </div>
             
 
@@ -454,10 +617,10 @@
               
               
               <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">3</span>
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">標籤</span>
-                
+                </a>
               </div>
             
 
@@ -465,6 +628,40 @@
 
           
 
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yoga0115" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/820115Yoga" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.linkedin.com/in/%E7%A5%90%E5%98%89-%E9%99%B3-862620155/" target="_blank" title="linkedin">
+                      
+                        <i class="fa fa-fw fa-globe"></i>linkedin</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/yoga820115" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Facebook</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="yoga820115@gmail.com" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Google</a>
+                  </span>
+                
+            </div>
           
 
           
@@ -478,6 +675,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Ch7"><span class="nav-number">1.</span> <span class="nav-text">Ch7</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用-Keras-建立多層感知器模型-Multilayer-perceptron-MLP"><span class="nav-number">1.1.</span> <span class="nav-text">用 Keras 建立多層感知器模型(Multilayer perceptron, MLP)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#預處理Data"><span class="nav-number">1.2.</span> <span class="nav-text">預處理Data</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Step1-匯入模組"><span class="nav-number">1.2.1.</span> <span class="nav-text">Step1 匯入模組</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step2-讀取資料"><span class="nav-number">1.2.2.</span> <span class="nav-text">Step2 讀取資料</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step3-將-Feature-28-x-28-圖-轉為-float"><span class="nav-number">1.2.3.</span> <span class="nav-text">Step3 將 Feature ( 28 x 28 圖)轉為 float</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step4-標準化Feature"><span class="nav-number">1.2.4.</span> <span class="nav-text">Step4 標準化Feature</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step5-Label-轉為-One-hot-encoding"><span class="nav-number">1.2.5.</span> <span class="nav-text">Step5 Label 轉為 One-hot encoding</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建立Model"><span class="nav-number">1.3.</span> <span class="nav-text">建立Model</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Step1-建立Sequential"><span class="nav-number">1.3.1.</span> <span class="nav-text">Step1 建立Sequential</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step2-用Dense建立隱藏層"><span class="nav-number">1.3.2.</span> <span class="nav-text">Step2 用Dense建立隱藏層</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step3-用Dense建立輸出層"><span class="nav-number">1.3.3.</span> <span class="nav-text">Step3 用Dense建立輸出層</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step4-查看模型摘要"><span class="nav-number">1.3.4.</span> <span class="nav-text">Step4 查看模型摘要</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#進行訓練"><span class="nav-number">1.4.</span> <span class="nav-text">進行訓練</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Step1-定義訓練方式"><span class="nav-number">1.4.1.</span> <span class="nav-text">Step1 定義訓練方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step2-開始訓練"><span class="nav-number">1.4.2.</span> <span class="nav-text">Step2 開始訓練</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step3-查看訓練結果"><span class="nav-number">1.4.3.</span> <span class="nav-text">Step3 查看訓練結果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#評估準確率"><span class="nav-number">1.5.</span> <span class="nav-text">評估準確率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#預測結果"><span class="nav-number">1.6.</span> <span class="nav-text">預測結果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ch8"><span class="nav-number">2.</span> <span class="nav-text">Ch8</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#卷積神經網路-convolutional-neural-network-CNN-簡介"><span class="nav-number">2.1.</span> <span class="nav-text">卷積神經網路(convolutional neural network, CNN)簡介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卷積運算-卷積層"><span class="nav-number">2.2.</span> <span class="nav-text">卷積運算(卷積層)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Max-Pool運算-池化層"><span class="nav-number">2.3.</span> <span class="nav-text">Max-Pool運算(池化層)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CNN實作"><span class="nav-number">2.4.</span> <span class="nav-text">CNN實作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Step1-資料預處理"><span class="nav-number">2.4.1.</span> <span class="nav-text">Step1 資料預處理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step2-模型建立"><span class="nav-number">2.4.2.</span> <span class="nav-text">Step2 模型建立</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step3-Training"><span class="nav-number">2.4.3.</span> <span class="nav-text">Step3 Training</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step4-Evaluate"><span class="nav-number">2.4.4.</span> <span class="nav-text">Step4 Evaluate</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step5-Prediction"><span class="nav-number">2.4.5.</span> <span class="nav-text">Step5  Prediction</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step6-Confusion-matrix"><span class="nav-number">2.4.6.</span> <span class="nav-text">Step6 Confusion matrix</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Same-as-MLP"><span class="nav-number">2.4.7.</span> <span class="nav-text">Same as MLP</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ch10"><span class="nav-number">3.</span> <span class="nav-text">Ch10</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Model訓練過程中的儲存與載入"><span class="nav-number">3.1.</span> <span class="nav-text">Model訓練過程中的儲存與載入</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

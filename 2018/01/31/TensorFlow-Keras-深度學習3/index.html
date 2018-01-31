@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-tw">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="深度學習,Keras,RNN,LSTM," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="介紹深度學習的流程、方法，並透過 TensorFlow 及 Keras 來實作。此篇主要介紹透過 Keras 使用 IMDb 資料集介紹 RNN 及 LSTM 兩種深度學習模型。參考自：1.TensorFlow+Keras深度學習人工智慧實務應用/ 林大貴/碩博出版社2.http://puremonkey2010.blogspot.tw/2017/09/toolkit-keras-imdb.htm">
+<meta name="keywords" content="深度學習,Keras,RNN,LSTM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorFlow + Keras 深度學習筆記3">
+<meta property="og:url" content="http://yoursite.com/2018/01/31/TensorFlow-Keras-深度學習3/index.html">
+<meta property="og:site_name" content="暖陽春草">
+<meta property="og:description" content="介紹深度學習的流程、方法，並透過 TensorFlow 及 Keras 來實作。此篇主要介紹透過 Keras 使用 IMDb 資料集介紹 RNN 及 LSTM 兩種深度學習模型。參考自：1.TensorFlow+Keras深度學習人工智慧實務應用/ 林大貴/碩博出版社2.http://puremonkey2010.blogspot.tw/2017/09/toolkit-keras-imdb.htm">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="http://yoursite.com/images/RNN.PNG">
+<meta property="og:image" content="http://yoursite.com/images/LSTM.PNG">
+<meta property="og:updated_time" content="2018-01-31T15:21:38.632Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TensorFlow + Keras 深度學習筆記3">
+<meta name="twitter:description" content="介紹深度學習的流程、方法，並透過 TensorFlow 及 Keras 來實作。此篇主要介紹透過 Keras 使用 IMDb 資料集介紹 RNN 及 LSTM 兩種深度學習模型。參考自：1.TensorFlow+Keras深度學習人工智慧實務應用/ 林大貴/碩博出版社2.http://puremonkey2010.blogspot.tw/2017/09/toolkit-keras-imdb.htm">
+<meta name="twitter:image" content="http://yoursite.com/images/RNN.PNG">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/31/TensorFlow-Keras-深度學習3/"/>
+
+
+
+
+
+  <title>TensorFlow + Keras 深度學習筆記3 | 暖陽春草</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">暖陽春草</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Divide and Conquer.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/31/TensorFlow-Keras-深度學習3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yoga Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="暖陽春草">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">TensorFlow + Keras 深度學習筆記3</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-31T23:18:35+08:00">
+                2018-01-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/深度學習/" itemprop="url" rel="index">
+                    <span itemprop="name">深度學習</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>介紹深度學習的流程、方法，並透過 TensorFlow 及 Keras 來實作。<br>此篇主要介紹透過 Keras 使用 IMDb 資料集介紹 RNN 及 LSTM 兩種深度學習模型。<br>參考自：<br>1.TensorFlow+Keras深度學習人工智慧實務應用/ 林大貴/碩博出版社<br>2.<a href="http://puremonkey2010.blogspot.tw/2017/09/toolkit-keras-imdb.html?m=0" target="_blank" rel="noopener">http://puremonkey2010.blogspot.tw/2017/09/toolkit-keras-imdb.html?m=0</a><br><a id="more"></a></p>
+<h2 id="Ch13、14"><a href="#Ch13、14" class="headerlink" title="Ch13、14"></a>Ch13、14</h2><h3 id="IMDb資料及預處理"><a href="#IMDb資料及預處理" class="headerlink" title="IMDb資料及預處理"></a>IMDb資料及預處理</h3><p>IMDb 網路資料庫(Internet Movie Database)，是一個電影相關的線上資料庫。<br>IMDb 資料集共有 50,000 筆 “<font color="#FF0000">影評文字</font>“，分為訓練資料與測試資料各 25,000 筆，每一筆 “影評文字” 都被標記成 “<font color="#FF0000">正面評價</font>“ 或 “<font color="#FF0000">負面評價</font>。<br>主要目標是能建立一個模型，經過大量 “影評文字” 訓練後，此模型能用於預測 “影評文字” 是 “正面評價” 或 “負面評價”。</p>
+<ul>
+<li>Downloads IMDb data<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="keyword">import</span> os, urllib, logging</span><br><span class="line"><span class="keyword">import</span> tarfile</span><br><span class="line"><span class="keyword">from</span> urllib.request <span class="keyword">import</span> urlretrieve</span><br><span class="line"></span><br><span class="line"><span class="comment">#Step0: Global setting</span></span><br><span class="line">LOG_FORMAT = <span class="string">'%(asctime)s - %(name)s - %(levelname)s - %(message)s'</span></span><br><span class="line">logging.basicConfig(format=LOG_FORMAT)</span><br><span class="line">logger = logging.getLogger(<span class="string">'IMDBb'</span>)</span><br><span class="line">logger.setLevel(logging.DEBUG)</span><br><span class="line"></span><br><span class="line"><span class="comment">#Step1: Download IMDB</span></span><br><span class="line">url = <span class="string">"http://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz"</span></span><br><span class="line">filepath = <span class="string">'datas/aclImdb_v1.tar.gz'</span></span><br><span class="line">dataPath = <span class="string">'datas/aclImdb'</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.isfile(filepath):</span><br><span class="line">print(<span class="string">'Downloading from &#123;&#125;...'</span>.format(url))</span><br><span class="line">result = urlretrieve(url, filepath)</span><br><span class="line">print(<span class="string">'download: &#123;&#125;'</span>.format(result))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.isdir(dataPath):</span><br><span class="line">print(<span class="string">'Extracting &#123;&#125; to datas...'</span>.format(filepath))</span><br><span class="line">tfile = tarfile.open(filepath, <span class="string">'r:gz'</span>)</span><br><span class="line">result = tfile.extractall(<span class="string">'datas/'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#Step2: Download IMDB</span></span><br><span class="line"><span class="keyword">from</span> keras.preprocessing <span class="keyword">import</span> sequence</span><br><span class="line"><span class="keyword">from</span> keras.preprocessing.text <span class="keyword">import</span> Tokenizer</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rm_tags</span><span class="params">(text)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    Remove HTML markers</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    re_tag = re.compile(<span class="string">r'&lt;[^&gt;]+&gt;'</span>)</span><br><span class="line">    <span class="keyword">return</span> re_tag.sub(<span class="string">''</span>, text)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_files</span><span class="params">(filetype)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    Read data from IMDb folders</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    @param filetype(str):</span></span><br><span class="line"><span class="string">    "train" or "test"</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    @return:</span></span><br><span class="line"><span class="string">    Tuple(List of labels, List of articles)</span></span><br><span class="line"><span class="string">   '''</span></span><br><span class="line">    file_list = []</span><br><span class="line">    positive_path = os.path.join(os.path.join(dataPath, filetype), <span class="string">'pos'</span>)</span><br><span class="line">    <span class="keyword">for</span> f <span class="keyword">in</span> os.listdir(positive_path):</span><br><span class="line">    file_list.append(os.path.join(positive_path, f))</span><br><span class="line"></span><br><span class="line">    negative_path = os.path.join(os.path.join(dataPath, filetype), <span class="string">'neg'</span>)</span><br><span class="line">    <span class="keyword">for</span> f <span class="keyword">in</span> os.listdir(negative_path):</span><br><span class="line">    file_list.append(os.path.join(negative_path, f))</span><br><span class="line"></span><br><span class="line">    logger.debug(<span class="string">'Read &#123;&#125; with &#123;&#125; files...'</span>.format(filetype, len(file_list)))</span><br><span class="line">    all_labels = ([<span class="number">1</span>] * <span class="number">12500</span> + [<span class="number">0</span>] * <span class="number">12500</span>)</span><br><span class="line">    all_texts = []</span><br><span class="line">    <span class="keyword">for</span> fi <span class="keyword">in</span> file_list:</span><br><span class="line">    logger.debug(<span class="string">'Read &#123;&#125;...'</span>.format(fi))</span><br><span class="line">    <span class="keyword">with</span> open(fi, encoding=<span class="string">'utf8'</span>) <span class="keyword">as</span> fh:</span><br><span class="line">    all_texts += [rm_tags(<span class="string">" "</span>.join(fh.readlines()))]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> all_labels, all_texts</span><br><span class="line"></span><br><span class="line">train_labels, train_text = read_files(<span class="string">'train'</span>)</span><br><span class="line">test_labels, test_text = read_files(<span class="string">'test'</span>)</span><br></pre></td></tr></table></figure></li>
+<li>Deep Learning Model 只能接受數字 → 使用 Keras 的 Tokenizer轉換<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Step3: Tokenize</span></span><br><span class="line">MAX_LEN_OF_TOKEN = <span class="number">100</span></span><br><span class="line"></span><br><span class="line">logger.info(<span class="string">'Tokenizing document...'</span>)</span><br><span class="line">token = Tokenizer(num_words = <span class="number">2000</span>)</span><br><span class="line"><span class="string">''' Create a dictionary of 2,000 words '''</span></span><br><span class="line">token.fit_on_texts(train_text)</span><br><span class="line"><span class="string">''' Read in all training text and select top 2,000 words according to frequency sorting descendingly '''</span></span><br><span class="line"></span><br><span class="line">logger.info(<span class="string">'Total &#123;&#125; document being handled...'</span>.format(token.document_count))</span><br><span class="line">logger.info(<span class="string">'Top 10 word index:'</span>)</span><br><span class="line">c = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> t,i <span class="keyword">in</span> token.word_index.items():</span><br><span class="line">print(<span class="string">"\t'&#123;&#125;'\t&#123;&#125;"</span>.format(t, i))</span><br><span class="line">c += <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> c == <span class="number">10</span>:</span><br><span class="line"><span class="keyword">break</span></span><br><span class="line">logger.info(<span class="string">'Translating raw text into token number list...'</span>)</span><br><span class="line">x_train_seq = token.texts_to_sequences(train_text)</span><br><span class="line">x_test_seq = token.texts_to_sequences(test_text)</span><br><span class="line"></span><br><span class="line">logger.info(<span class="string">'Padding/Trimming the token number list to same length=&#123;&#125;...'</span>.format(MAX_LEN_OF_TOKEN))</span><br><span class="line">x_train = sequence.pad_sequences(x_train_seq, maxlen=MAX_LEN_OF_TOKEN)</span><br><span class="line">x_test = sequence.pad_sequences(x_test_seq, maxlen=MAX_LEN_OF_TOKEN)</span><br></pre></td></tr></table></figure>
+建立token，決定字典字數，讀取訓練資料時將頻率高者放入字典，再使用此token將文字轉為list。<br>之後將數字list長度都變成特定值(不足補0，多於刪除，不論刪除或補0都是從前面操作)，最後使用Embedding將字數list轉為向量list。<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.layers.embeddings <span class="keyword">import</span> Embedding</span><br><span class="line">model.add(Embedding(output_dim=<span class="number">32</span>,input_dim=<span class="number">2000</span>,input_length=<span class="number">100</span>))  <span class="comment">#input_dim為token字典字數</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="遞歸神經網路-Recurrent-Neural-Network-RNN"><a href="#遞歸神經網路-Recurrent-Neural-Network-RNN" class="headerlink" title="遞歸神經網路(Recurrent Neural Network, RNN)"></a>遞歸神經網路(Recurrent Neural Network, RNN)</h3><p>人工智慧所要解決的問題中，很多是具有<font color="#FF0000">順序</font>的，例如自然語言處理 (同一時間只能聽到一個字，之前的語言會影響之後語言的意義)，視訊影片處理 (影片是一張張的照片，依照時間順序所組成)，氣象觀測資料 (氣象資訊隨著時間不斷改變)，股市交易資料 (股市開盤後，股價隨著時間不斷變動)。</p>
+<p><font color="#FF0000">多層感知器 (MLP)</font> 或<font color="#FF0000">卷積神經網路 (CNN)</font>，都只能<font color="#FF0000">依照當下的狀態進行辨識</font>， 如果要處理時間序列的問題，就必須使用 RNN 與 LSTM 模型。<br>RNN原理是將<font color="#FF0000">神經元的輸出，再接回神經元的輸入</font>，這樣的設計使神經網路具有 “<font color="#FF0000">記憶</font>“ 的功能。<br><img src="/images/RNN.PNG" alt=""></p>
+<p></p><p align="center"><font size="1">(圖片來源：<a href="http://puremonkey2010.blogspot.tw/2017/09/toolkit-keras-imdb.html?m=0" target="_blank" rel="noopener">http://puremonkey2010.blogspot.tw/2017/09/toolkit-keras-imdb.html?m=0</a>)</font></p><p></p>
+<ul>
+<li>X 是神經元的輸入</li>
+<li>O 是神經元的輸出</li>
+<li>(U,V,W) 都是神經網路的參數<br>-<font color="#FF0000"> S 是隱藏狀態, 代表著神經元網路的 “記憶”</font>，是經過目前時間點的輸入 Xt, 再加上上個時間點的狀態 St-1, 再加上 U 與 W 的參數, 共同評估的結果:St = f ( U <em> Xt + W </em> St-1 )<br>實作：將Embedding層後的平坦層改為RNN<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">model = Sequential()</span><br><span class="line">model.add(Embedding(output_dim=<span class="number">32</span>,input_dim=<span class="number">2000</span>,input_length=<span class="number">100</span>))</span><br><span class="line">model.add(SimpleRNN(unit=<span class="number">32</span>))</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="長短期記憶-Long-Short-Term-Memory-LSTM"><a href="#長短期記憶-Long-Short-Term-Memory-LSTM" class="headerlink" title="長短期記憶 (Long-Short Term Memory, LSTM)"></a>長短期記憶 (Long-Short Term Memory, LSTM)</h3><p>專門設計來解決 RNN 的 <font color="#FF0000"> Long-term dependencies </font>問題。<br>[補]Long-term dependencies：簡單說就是在每一個時間間隔不斷增大時，RNN 會喪失學習到連接遠的訊息能力。<br>運作方式：<br><img src="/images/LSTM.PNG" alt=""></p>
+<p></p><p align="center"><font size="1">(圖片來源：<a href="http://puremonkey2010.blogspot.tw/2017/09/toolkit-keras-imdb.html?m=0" target="_blank" rel="noopener">http://puremonkey2010.blogspot.tw/2017/09/toolkit-keras-imdb.html?m=0</a>)</font></p><p></p>
+<ul>
+<li>Xt: 輸入向量</li>
+<li>ht: 輸出向量</li>
+<li><font color="#FF0000">Ct: “Cell” 是 LSTM 的記憶細胞的狀態 (cell state)，LSTM 透過一種名為 “閘門” (gate) 的機制控制 cell 記憶細胞的狀態，刪減或增加其中的訊息。</font></li>
+<li>It: “輸入閘門” (Input Gate) 用於決定哪些訊息要被增加到 cell</li>
+<li>Ft: “忘記閘門” (Forget Gate) 用於決定哪些訊息要自 cell 刪除</li>
+<li>Ot: “輸出閘門” (Output Gate) 用於決定哪些訊息要自 cell 輸出<br>實作：將 Embedding 層後的平坦層改為 LSTM ( 同 RNN，將 SimpleRNN 改為 LSTM )</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/深度學習/" rel="tag"># 深度學習</a>
+          
+            <a href="/tags/Keras/" rel="tag"># Keras</a>
+          
+            <a href="/tags/RNN/" rel="tag"># RNN</a>
+          
+            <a href="/tags/LSTM/" rel="tag"># LSTM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/31/TensorFlow-Keras-深度學習2/" rel="next" title="TensorFlow + Keras 深度學習筆記2">
+                <i class="fa fa-chevron-left"></i> TensorFlow + Keras 深度學習筆記2
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Yoga Chen" />
+            
+              <p class="site-author-name" itemprop="name">Yoga Chen</p>
+              <p class="site-description motion-element" itemprop="description">Divide and Conquer.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yoga0115" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/820115Yoga" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.linkedin.com/in/%E7%A5%90%E5%98%89-%E9%99%B3-862620155/" target="_blank" title="linkedin">
+                      
+                        <i class="fa fa-fw fa-globe"></i>linkedin</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/yoga820115" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Facebook</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="yoga820115@gmail.com" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Google</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Ch13、14"><span class="nav-number">1.</span> <span class="nav-text">Ch13、14</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IMDb資料及預處理"><span class="nav-number">1.1.</span> <span class="nav-text">IMDb資料及預處理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遞歸神經網路-Recurrent-Neural-Network-RNN"><span class="nav-number">1.2.</span> <span class="nav-text">遞歸神經網路(Recurrent Neural Network, RNN)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#長短期記憶-Long-Short-Term-Memory-LSTM"><span class="nav-number">1.3.</span> <span class="nav-text">長短期記憶 (Long-Short Term Memory, LSTM)</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yoga Chen</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 強力驅動</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主題 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
