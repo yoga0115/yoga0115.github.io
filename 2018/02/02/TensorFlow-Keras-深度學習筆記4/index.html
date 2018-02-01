@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-tw">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="深度學習,MLP,CNN,TensorFlow," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="介紹深度學習的流程、方法，並透過 TensorFlow 及 Keras 來實作。此篇主要介紹透過 TensorFlow 實作深度學習模型。參考自：1.TensorFlow+Keras深度學習人工智慧實務應用/ 林大貴/碩博出版社">
+<meta name="keywords" content="深度學習,MLP,CNN,TensorFlow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorFlow-Keras-深度學習筆記4">
+<meta property="og:url" content="http://yoursite.com/2018/02/02/TensorFlow-Keras-深度學習筆記4/index.html">
+<meta property="og:site_name" content="暖陽春草">
+<meta property="og:description" content="介紹深度學習的流程、方法，並透過 TensorFlow 及 Keras 來實作。此篇主要介紹透過 TensorFlow 實作深度學習模型。參考自：1.TensorFlow+Keras深度學習人工智慧實務應用/ 林大貴/碩博出版社">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="http://yoursite.com/images/np_vs_tf.png">
+<meta property="og:updated_time" content="2018-02-01T16:55:17.136Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TensorFlow-Keras-深度學習筆記4">
+<meta name="twitter:description" content="介紹深度學習的流程、方法，並透過 TensorFlow 及 Keras 來實作。此篇主要介紹透過 TensorFlow 實作深度學習模型。參考自：1.TensorFlow+Keras深度學習人工智慧實務應用/ 林大貴/碩博出版社">
+<meta name="twitter:image" content="http://yoursite.com/images/np_vs_tf.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/02/TensorFlow-Keras-深度學習筆記4/"/>
+
+
+
+
+
+  <title>TensorFlow-Keras-深度學習筆記4 | 暖陽春草</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">暖陽春草</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Divide and Conquer.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/02/TensorFlow-Keras-深度學習筆記4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yoga Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="暖陽春草">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">TensorFlow-Keras-深度學習筆記4</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-02-02T00:36:17+08:00">
+                2018-02-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>介紹深度學習的流程、方法，並透過 TensorFlow 及 Keras 來實作。<br>此篇主要介紹透過 TensorFlow 實作深度學習模型。<br>參考自：<br>1.TensorFlow+Keras深度學習人工智慧實務應用/ 林大貴/碩博出版社<br><a id="more"></a></p>
+<h2 id="Ch15"><a href="#Ch15" class="headerlink" title="Ch15"></a>Ch15</h2><h3 id="TensorFlow：建立計算圖-→-執行計算圖"><a href="#TensorFlow：建立計算圖-→-執行計算圖" class="headerlink" title="TensorFlow：建立計算圖 → 執行計算圖"></a>TensorFlow：建立計算圖 → 執行計算圖</h3><h3 id="建立計算圖"><a href="#建立計算圖" class="headerlink" title="建立計算圖"></a>建立計算圖</h3><h4 id="Step1：import-tensorflow"><a href="#Step1：import-tensorflow" class="headerlink" title="Step1：import tensorflow"></a>Step1：import tensorflow</h4><h4 id="Step2：建立tf常數"><a href="#Step2：建立tf常數" class="headerlink" title="Step2：建立tf常數"></a>Step2：建立tf常數</h4><h4 id="Step3：建立tf變數"><a href="#Step3：建立tf變數" class="headerlink" title="Step3：建立tf變數"></a>Step3：建立tf變數</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#建立計算圖</span></span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf   <span class="comment">#step1 import tensorflow</span></span><br><span class="line">x = tf.constant(<span class="number">3</span>, name=<span class="string">"x"</span>) <span class="comment">#建立tf常數</span></span><br><span class="line">y = tf.Variable(<span class="number">4</span>+x, name=<span class="string">"y"</span>) <span class="comment">#建立tf變數</span></span><br><span class="line">f = x + y</span><br></pre></td></tr></table></figure>
+<h3 id="執行計算圖"><a href="#執行計算圖" class="headerlink" title="執行計算圖"></a>執行計算圖</h3><h4 id="Step1：建立session"><a href="#Step1：建立session" class="headerlink" title="Step1：建立session"></a>Step1：建立session</h4><h4 id="Step2：建立TensorFlow起始化變數"><a href="#Step2：建立TensorFlow起始化變數" class="headerlink" title="Step2：建立TensorFlow起始化變數"></a>Step2：建立TensorFlow起始化變數</h4><h4 id="Step3：關閉TensorFlow"><a href="#Step3：關閉TensorFlow" class="headerlink" title="Step3：關閉TensorFlow"></a>Step3：關閉TensorFlow</h4><h4 id="Step4：利用with自動開關session"><a href="#Step4：利用with自動開關session" class="headerlink" title="Step4：利用with自動開關session"></a>Step4：利用with自動開關session</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#建立計算圖</span></span><br><span class="line"><span class="comment">#執行計算圖</span></span><br><span class="line">sess = tf.Session()  <span class="comment">#建立Session</span></span><br><span class="line">init = tf.global_variables_initializer()  <span class="comment">#temsorflow起始化變數</span></span><br><span class="line">sess.run(init)   <span class="comment">#執行初始化</span></span><br><span class="line">sess.run(x)      <span class="comment">#顯示x，即3</span></span><br><span class="line">sess.run(y)      <span class="comment">#顯示y，即3+4=7</span></span><br><span class="line">sess.run(f)      <span class="comment">#顯示f，即3+7=10</span></span><br><span class="line">sess.close()     <span class="comment">#關閉session</span></span><br><span class="line"><span class="comment">#用with自動開關session</span></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    x.initializer.run()</span><br><span class="line">    y.initializer.run()</span><br><span class="line">    result = f.eval()</span><br></pre></td></tr></table></figure>
+<p>[補] 利用eval也可以顯示運算結果：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">w = tf.constant(<span class="number">3</span>)</span><br><span class="line">x = w + <span class="number">2</span></span><br><span class="line">y = x + <span class="number">5</span></span><br><span class="line">z = x /* <span class="number">3</span></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    print(y.eval())    <span class="comment">#10</span></span><br><span class="line">    print(z.eval())    <span class="comment">#15</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="執行計算圖時才設定數值-placeholder"><a href="#執行計算圖時才設定數值-placeholder" class="headerlink" title="執行計算圖時才設定數值(placeholder)"></a>執行計算圖時才設定數值(placeholder)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#執行計算圖時才餵參數</span></span><br><span class="line">A = tf.placeholder(tf.float32, shape=(<span class="keyword">None</span>, <span class="number">3</span>))  <span class="comment">#定義資料型態，shape = None(不確定有幾筆資料),3(每筆資料有三個質)</span></span><br><span class="line">B = A + <span class="number">5</span></span><br><span class="line">sess.run(B, fead_dict=&#123;A:[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]]&#125;)   <span class="comment">#執行時再用feed把數值餵進去，output = [[ 6. 7. 8.]]</span></span><br></pre></td></tr></table></figure>
+<h3 id="TensorBoard視覺化檢視計算圖"><a href="#TensorBoard視覺化檢視計算圖" class="headerlink" title="TensorBoard視覺化檢視計算圖"></a>TensorBoard視覺化檢視計算圖</h3><h4 id="Step1-將資料寫入log檔"><a href="#Step1-將資料寫入log檔" class="headerlink" title="Step1 將資料寫入log檔"></a>Step1 將資料寫入log檔</h4><h4 id="Step2-Windows-CMD-啟動-TensorBoard"><a href="#Step2-Windows-CMD-啟動-TensorBoard" class="headerlink" title="Step2 Windows CMD 啟動 TensorBoard"></a>Step2 Windows CMD 啟動 TensorBoard</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#以Tensor Board 視覺化檢視計算圖</span></span><br><span class="line">sess_graph = tf.summary.merge_all()  <span class="comment">#將要顯示在tensorboard上的資料整合</span></span><br><span class="line">train_writer = tf.summary.FileWriter(<span class="string">'儲存路徑'</span>,sees_graph) <span class="comment">#寫入log檔，存在執行目錄下的路徑</span></span><br></pre></td></tr></table></figure>
+<p>之後開啟CMD 執行 tensorboard –logdir:’儲存路徑’ tf_logs/<br>開啟 <a href="http://0.0.0.0:6006" target="_blank" rel="noopener">http://0.0.0.0:6006</a> 檢視</p>
+<h3 id="TensorFlow基礎運算"><a href="#TensorFlow基礎運算" class="headerlink" title="TensorFlow基礎運算"></a>TensorFlow基礎運算</h3><p>矩陣加減法直接使用 + - 符號<br>矩陣乘法：tf.matmul(x,w)<br>[補]<br><img src="/images/np_vs_tf.png" alt=""></p>
+<p align="center"><font size="1">(圖片來源：<a href="http://mropengate.blogspot.tw/2016/10/ai-ch165-tensorflow.html" target="_blank" rel="noopener">http://mropengate.blogspot.tw/2016/10/ai-ch165-tensorflow.html</a>)</font></p>
+
+<h2 id="ch16"><a href="#ch16" class="headerlink" title="ch16"></a>ch16</h2><h3 id="TensorFlow-模擬神經網路"><a href="#TensorFlow-模擬神經網路" class="headerlink" title="TensorFlow 模擬神經網路"></a>TensorFlow 模擬神經網路</h3><p>在Keras中我們有套件可以自動化產生sequential, layers, loss function, optimizer, …等等，但在 tensorflow 中沒有，所以我們在建模前，需要先定義相關的 funtion 在使用於建模中。</p>
+<ol>
+<li>tf.Variable() 建立變數：( XW ) + b</li>
+<li>引用relu激活函數：y = tf.nn.relu( tf.matmul(X,W)+b)<br> 引用sigmoid激活函數：y = tf.nn.sigmoid( tf.matmul(X,W)+b)</li>
+<li>以常態分佈亂數產生 W 與 b：tf.random_normal([m , n ]) → m為第1維度資料、n為第二維度資料</li>
+<li>建立layer函數：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">layer</span><span class="params">(output_dim,input_dim,inputs,cativation=None)</span>:</span>        <span class="comment">#inputs是輸入的2維陣列placeholder</span></span><br><span class="line">    W = tf.Variable(tf.ransom_normal([input_dim,output_dim]))  <span class="comment">#產生維度是(input_dim,output_dim)的亂數矩陣</span></span><br><span class="line">    b = tf.Variable(tf.ransom_normal([<span class="number">1</span>,output_dim]))          <span class="comment">#建立bias矩陣</span></span><br><span class="line">    XWb = tf.matmul(inputs,W) + b       <span class="comment">#建立矩陣運算式</span></span><br><span class="line">    <span class="keyword">if</span> activation <span class="keyword">is</span> <span class="keyword">None</span>:              <span class="comment">#激活函數</span></span><br><span class="line">        outputs = XWb</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        outputs = activation(XWb)</span><br><span class="line">    <span class="keyword">return</span> outputs                      <span class="comment">#傳回結果</span></span><br></pre></td></tr></table></figure>
+<p>5.使用前面建立的layer函數來建立輸入、隱藏、輸出層：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">X = tf.placeholder(<span class="string">"float"</span>,[<span class="keyword">None</span>,k])    <span class="comment">#input layer</span></span><br><span class="line"><span class="comment">#[None,k]None是只要放入的資料筆數，因為不確定所以為None；k代表每筆資料含多少數字</span></span><br><span class="line">h = layer(output_dim = r, input_dim = k, inputs = X, activation = tf.nn.relu)</span><br><span class="line"><span class="comment">#hiddin layer 使用 layer 函數</span></span><br><span class="line">y = layer(output_dim = q, input_dim = r, input = h)</span><br><span class="line"><span class="comment">#output layer</span></span><br><span class="line"><span class="comment">#前一層的 output_dim = 後一層的 input_dim</span></span><br><span class="line"><span class="comment">#inputs 為前一層</span></span><br></pre></td></tr></table></figure>
+<h2 id="Ch18"><a href="#Ch18" class="headerlink" title="Ch18"></a>Ch18</h2><h3 id="TensorFlow定義訓練方式"><a href="#TensorFlow定義訓練方式" class="headerlink" title="TensorFlow定義訓練方式"></a>TensorFlow定義訓練方式</h3><ol>
+<li>建立training data label 真實值的 placeholder</li>
+<li>定義loss function</li>
+<li>定義optimizer</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#定義訓練參數</span></span><br><span class="line"><span class="comment">#建立training data label 真實值的 placeholder</span></span><br><span class="line">y_label = tf.placeholder(<span class="string">"float"</span>,[<span class="keyword">None</span>,<span class="number">10</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">#定義loss function</span></span><br><span class="line">loss_function = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits = y_predict, label = y_label)</span><br><span class="line"><span class="comment">#用 cross_entropy 計算誤差，再將計算結果平均</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#定義optimizer</span></span><br><span class="line">optimizer = tf.train.AdamOptimizer(learning_rate = <span class="number">0.01</span>).minimize(loss_function)</span><br><span class="line"><span class="comment">#使用 Adam 方法來做 optimizer，最後使 loss function 算出的 loss 最小化</span></span><br></pre></td></tr></table></figure>
+<h3 id="定義評估模型的準確率方式"><a href="#定義評估模型的準確率方式" class="headerlink" title="定義評估模型的準確率方式"></a>定義評估模型的準確率方式</h3><ol>
+<li>計算每筆資料是否預測正確</li>
+<li>將計算結果平均</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#定義評估模型準確率的方式</span></span><br><span class="line"><span class="comment">#計算每筆資料是否預測正確</span></span><br><span class="line">correct_prediction = tf.equal(tf.argmax(y_label,<span class="number">1</span>),tf.argmax(y_predict,<span class="number">1</span>))</span><br><span class="line"><span class="comment">#判斷label與predict是否相同，相同 = 1，不同 = 0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#將計算結果平均</span></span><br><span class="line">accuracy = tf.reduce_mean(tf.cast(currect_prediction,<span class="string">"float"</span>))</span><br></pre></td></tr></table></figure>
+<h3 id="進行訓練"><a href="#進行訓練" class="headerlink" title="進行訓練"></a>進行訓練</h3><ol>
+<li>定義訓練參數(以MNIST資料集為例)</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#定義訓練參數</span></span><br><span class="line">trainEpochs = <span class="number">15</span> <span class="comment">#訓練週期15次</span></span><br><span class="line">batchSize = <span class="number">100</span> <span class="comment">#每批訓練100筆</span></span><br><span class="line">loss_list = [];epoch_list = [];accuracy_list = [] <span class="comment">#初始化</span></span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> time</span><br><span class="line">startTime = time()     <span class="comment">#匯入time計算時間</span></span><br><span class="line">sess = tf.Session()</span><br><span class="line">sess.run(tf.global_variables_initializer())</span><br></pre></td></tr></table></figure>
+<ol>
+<li>訓練</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Training</span></span><br><span class="line">totalBatchs = int(muist.train.num_example/batchSize) <span class="comment">#共進行多少次訓練</span></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(trainEpochs):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range (totalBatchs):</span><br><span class="line">        batch_x,batch_y = mnist.train.next_batch(batchSize) <span class="comment">#每次讀取batchSize筆資料回傳</span></span><br><span class="line">        sess.run(optimizer,feed_dict=&#123;x:batch_x,y_label:batch_y&#125;)</span><br><span class="line">    loss,acc = sess.run([loss_function,accuracy],fead_dict = &#123;x:mnist.validation.images,y_label:mnist.validation.labels&#125;)</span><br><span class="line">    <span class="comment">#使用驗證資料計算準確性</span></span><br><span class="line">    epoch_list.append(epoch); loss_list.append(loss); accuracy_list.append(acc)</span><br><span class="line">    <span class="comment">#將training結果寫入list</span></span><br></pre></td></tr></table></figure>
+<h2 id="Ch19"><a href="#Ch19" class="headerlink" title="Ch19"></a>Ch19</h2><h3 id="CNN共用函數：用tensorflow建立CNN時會事先定義的函數"><a href="#CNN共用函數：用tensorflow建立CNN時會事先定義的函數" class="headerlink" title="CNN共用函數：用tensorflow建立CNN時會事先定義的函數"></a>CNN共用函數：用tensorflow建立CNN時會事先定義的函數</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#CNN共用函數</span></span><br><span class="line"><span class="comment">#weight</span></span><br><span class="line">weight(shape):</span><br><span class="line"><span class="keyword">return</span> tf.Variable(tf.truncate_normal(shape,stddev = <span class="number">0.1</span>),name = <span class="string">'w'</span>)</span><br><span class="line"><span class="comment">#以隨機方式初始函數</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#bias</span></span><br><span class="line">bias(shape):</span><br><span class="line"><span class="keyword">return</span> tf.Variable(tf.constant(<span class="number">0.1</span>,shape = shape,name = <span class="string">'b'</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">#conv2d用於卷積運算</span></span><br><span class="line">vonv2d(x,w):</span><br><span class="line"><span class="keyword">return</span> tf.nn.conv2d(x,w,strides=[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>],padding=<span class="string">'SAME'</span>)</span><br><span class="line"><span class="comment">#strides[0]和strides[3]的兩個1是默認值，中間兩個1代表padding時在x方向運動一步，y方向運動一步</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#max_pool_2x2用於池化層</span></span><br><span class="line">max_pool_2x2(x):</span><br><span class="line"><span class="keyword">return</span> tf.nn.max_pool(x,ksize=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>],strides = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>],padding = <span class="string">'SAME'</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="其餘層的建立與前面範例類似，只有平坦層稍微不同"><a href="#其餘層的建立與前面範例類似，只有平坦層稍微不同" class="headerlink" title="其餘層的建立與前面範例類似，只有平坦層稍微不同"></a>其餘層的建立與前面範例類似，只有平坦層稍微不同</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#平坦層</span></span><br><span class="line">D_Flst = tf.reshape(C2_Pool,[<span class="number">-1</span>,k])</span><br><span class="line"><span class="comment">#C2_Pool為最後池化層，-1表示先不考慮輸入圖片例子維度, 將上一個輸出結果展平</span></span><br></pre></td></tr></table></figure>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
+<li>利用GPU可以幫助機器學習，優勢明顯出現在<font color="#FF0000">大量運算</font>中，量太小速度可能比CPU慢。</li>
+<li>tensorflow不錯的學習網站：<a href="https://morvanzhou.github.io/tutorials/machine-learning/tensorflow/" target="_blank" rel="noopener">https://morvanzhou.github.io/tutorials/machine-learning/tensorflow/</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/深度學習/" rel="tag"># 深度學習</a>
+          
+            <a href="/tags/MLP/" rel="tag"># MLP</a>
+          
+            <a href="/tags/CNN/" rel="tag"># CNN</a>
+          
+            <a href="/tags/TensorFlow/" rel="tag"># TensorFlow</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/31/TensorFlow-Keras-深度學習3/" rel="next" title="TensorFlow + Keras 深度學習筆記3">
+                <i class="fa fa-chevron-left"></i> TensorFlow + Keras 深度學習筆記3
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/02/OpenCV-Install-OpenCV3-on-macOS/" rel="prev" title="OpenCV-Install-OpenCV3-on-macOS">
+                OpenCV-Install-OpenCV3-on-macOS <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Yoga Chen" />
+            
+              <p class="site-author-name" itemprop="name">Yoga Chen</p>
+              <p class="site-description motion-element" itemprop="description">Divide and Conquer.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yoga0115" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/820115Yoga" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.linkedin.com/in/%E7%A5%90%E5%98%89-%E9%99%B3-862620155/" target="_blank" title="linkedin">
+                      
+                        <i class="fa fa-fw fa-globe"></i>linkedin</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/yoga820115" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Facebook</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yoga820115@gmail.com" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Google</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Ch15"><span class="nav-number">1.</span> <span class="nav-text">Ch15</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TensorFlow：建立計算圖-→-執行計算圖"><span class="nav-number">1.1.</span> <span class="nav-text">TensorFlow：建立計算圖 → 執行計算圖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建立計算圖"><span class="nav-number">1.2.</span> <span class="nav-text">建立計算圖</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Step1：import-tensorflow"><span class="nav-number">1.2.1.</span> <span class="nav-text">Step1：import tensorflow</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step2：建立tf常數"><span class="nav-number">1.2.2.</span> <span class="nav-text">Step2：建立tf常數</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step3：建立tf變數"><span class="nav-number">1.2.3.</span> <span class="nav-text">Step3：建立tf變數</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#執行計算圖"><span class="nav-number">1.3.</span> <span class="nav-text">執行計算圖</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Step1：建立session"><span class="nav-number">1.3.1.</span> <span class="nav-text">Step1：建立session</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step2：建立TensorFlow起始化變數"><span class="nav-number">1.3.2.</span> <span class="nav-text">Step2：建立TensorFlow起始化變數</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step3：關閉TensorFlow"><span class="nav-number">1.3.3.</span> <span class="nav-text">Step3：關閉TensorFlow</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step4：利用with自動開關session"><span class="nav-number">1.3.4.</span> <span class="nav-text">Step4：利用with自動開關session</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#執行計算圖時才設定數值-placeholder"><span class="nav-number">1.4.</span> <span class="nav-text">執行計算圖時才設定數值(placeholder)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TensorBoard視覺化檢視計算圖"><span class="nav-number">1.5.</span> <span class="nav-text">TensorBoard視覺化檢視計算圖</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Step1-將資料寫入log檔"><span class="nav-number">1.5.1.</span> <span class="nav-text">Step1 將資料寫入log檔</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step2-Windows-CMD-啟動-TensorBoard"><span class="nav-number">1.5.2.</span> <span class="nav-text">Step2 Windows CMD 啟動 TensorBoard</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TensorFlow基礎運算"><span class="nav-number">1.6.</span> <span class="nav-text">TensorFlow基礎運算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ch16"><span class="nav-number">2.</span> <span class="nav-text">ch16</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TensorFlow-模擬神經網路"><span class="nav-number">2.1.</span> <span class="nav-text">TensorFlow 模擬神經網路</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ch18"><span class="nav-number">3.</span> <span class="nav-text">Ch18</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TensorFlow定義訓練方式"><span class="nav-number">3.1.</span> <span class="nav-text">TensorFlow定義訓練方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定義評估模型的準確率方式"><span class="nav-number">3.2.</span> <span class="nav-text">定義評估模型的準確率方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#進行訓練"><span class="nav-number">3.3.</span> <span class="nav-text">進行訓練</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ch19"><span class="nav-number">4.</span> <span class="nav-text">Ch19</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CNN共用函數：用tensorflow建立CNN時會事先定義的函數"><span class="nav-number">4.1.</span> <span class="nav-text">CNN共用函數：用tensorflow建立CNN時會事先定義的函數</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其餘層的建立與前面範例類似，只有平坦層稍微不同"><span class="nav-number">4.2.</span> <span class="nav-text">其餘層的建立與前面範例類似，只有平坦層稍微不同</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">5.</span> <span class="nav-text">其他</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yoga Chen</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 強力驅動</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主題 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
