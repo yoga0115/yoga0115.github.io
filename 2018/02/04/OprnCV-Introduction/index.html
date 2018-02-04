@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="OpenCV,Python,macOS," />
+  <meta name="keywords" content="OpenCV,Python," />
 
 
 
@@ -79,25 +79,24 @@
 
 
 
-<meta name="description" content="OpenCV筆記，本篇主要介紹如何在 macOS 上以 Homebrew 安裝 Python 及 OpenCV3">
-<meta name="keywords" content="OpenCV,Python,macOS">
+<meta name="description" content="OpenCV 是運行在 Pytho 或 C++ 上的圖像處理庫，當中包含很多圖像特徵擷取的方法，以及對於圖像處理的運算等。接下來主要是在 MAC OS + jupyter notebook + Python3.6 + OpenCV3.3.0 的環境下運行">
+<meta name="keywords" content="OpenCV,Python">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OpenCV:Install OpenCV3 on macOS">
-<meta property="og:url" content="http://yoursite.com/2018/02/02/OpenCV-Install-OpenCV3-on-macOS/index.html">
+<meta property="og:title" content="OprnCV : Introduction">
+<meta property="og:url" content="http://yoursite.com/2018/02/04/OprnCV-Introduction/index.html">
 <meta property="og:site_name" content="暖陽春草">
-<meta property="og:description" content="OpenCV筆記，本篇主要介紹如何在 macOS 上以 Homebrew 安裝 Python 及 OpenCV3">
+<meta property="og:description" content="OpenCV 是運行在 Pytho 或 C++ 上的圖像處理庫，當中包含很多圖像特徵擷取的方法，以及對於圖像處理的運算等。接下來主要是在 MAC OS + jupyter notebook + Python3.6 + OpenCV3.3.0 的環境下運行">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:image" content="http://yoursite.com/images/2018/02/02/py_file.png">
-<meta property="og:image" content="http://yoursite.com/images/2018/02/02/py_path.png">
-<meta property="og:image" content="http://yoursite.com/images/2018/02/02/py_version.png">
-<meta property="og:image" content="http://yoursite.com/images/2018/02/02/env.png">
-<meta property="og:image" content="http://yoursite.com/images/2018/02/02/env_file.png">
-<meta property="og:image" content="http://yoursite.com/images/2018/02/02/cv2_test.png">
-<meta property="og:updated_time" content="2018-02-04T14:06:45.659Z">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/04/imread.png">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/04/擷取.png">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/04/return.png">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/04/randomgray.png">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/04/randombgr.png">
+<meta property="og:updated_time" content="2018-02-04T14:30:01.759Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OpenCV:Install OpenCV3 on macOS">
-<meta name="twitter:description" content="OpenCV筆記，本篇主要介紹如何在 macOS 上以 Homebrew 安裝 Python 及 OpenCV3">
-<meta name="twitter:image" content="http://yoursite.com/images/2018/02/02/py_file.png">
+<meta name="twitter:title" content="OprnCV : Introduction">
+<meta name="twitter:description" content="OpenCV 是運行在 Pytho 或 C++ 上的圖像處理庫，當中包含很多圖像特徵擷取的方法，以及對於圖像處理的運算等。接下來主要是在 MAC OS + jupyter notebook + Python3.6 + OpenCV3.3.0 的環境下運行">
+<meta name="twitter:image" content="http://yoursite.com/images/2018/02/04/imread.png">
 
 
 
@@ -127,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/02/02/OpenCV-Install-OpenCV3-on-macOS/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/02/04/OprnCV-Introduction/"/>
 
 
 
 
 
-  <title>OpenCV:Install OpenCV3 on macOS | 暖陽春草</title>
+  <title>OprnCV : Introduction | 暖陽春草</title>
   
 
 
@@ -270,7 +269,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/02/OpenCV-Install-OpenCV3-on-macOS/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/04/OprnCV-Introduction/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yoga Chen">
@@ -287,7 +286,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">OpenCV:Install OpenCV3 on macOS</h1>
+          <h1 class="post-title" itemprop="name headline">OprnCV : Introduction</h1>
         
 
         <div class="post-meta">
@@ -299,8 +298,8 @@
               
                 <span class="post-meta-item-text">發表於</span>
               
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-02-02T00:36:39+08:00">
-                2018-02-02
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-02-04T22:35:01+08:00">
+                2018-02-04
               </time>
             
 
@@ -359,15 +358,8 @@
       
 
       
-        <p>OpenCV筆記，本篇主要介紹如何在 macOS 上以 Homebrew 安裝 Python 及 OpenCV3<br><a id="more"></a></p>
-<h2 id="OpenCV安裝分為三個部分："><a href="#OpenCV安裝分為三個部分：" class="headerlink" title="OpenCV安裝分為三個部分："></a>OpenCV安裝分為三個部分：</h2><h3 id="Part-1-install-homebrew"><a href="#Part-1-install-homebrew" class="headerlink" title="Part 1 install homebrew"></a>Part 1 install homebrew</h3><p>在terminal中輸入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span><br></pre></td></tr></table></figure><br>安裝完後輸入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ brew doctor</span><br></pre></td></tr></table></figure><br>如果出現<br><blockquote><p>Your system is ready to brew.</p>
-</blockquote><br>代表安裝成功<br>如果出現其他warning就照著上面的指示修正就可以了</p>
-<h3 id="Part-2-install-Python"><a href="#Part-2-install-Python" class="headerlink" title="Part 2 install Python"></a>Part 2 install Python</h3><p>利用Part 1裝好的homebrew安裝Python<br>在terminal中輸入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ brew install python</span><br><span class="line">$ brew install python3</span><br></pre></td></tr></table></figure><br>第一個是安裝Python2的指令<br>第二個是安裝Python3的指令<br>安裝完後homebrew下載的python會放在/usr/local/Cellar中<br><img src="/images/2018/02/02/py_file.png" alt=""><br>另外Mac本身有一個Python是系統使用<br>在查看版本與位置的時候<font color="#FF0000">Python為原本Ｍac裡的Python2及Python3才是安裝下來的</font><br><img src="/images/2018/02/02/py_path.png" alt=""><br><img src="/images/2018/02/02/py_version.png" alt=""><br>接下來可以使用pip2或pip3安裝Python所需的套件</p>
-<p>python虛擬環境<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install virtualenv</span><br></pre></td></tr></table></figure><br>建立名為 yoga.env 的虛擬環境：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ virtualenv yoga.env</span><br></pre></td></tr></table></figure><br>啟動虛擬環境：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ source yoga.env/bin/activate</span><br></pre></td></tr></table></figure><br>關閉虛擬環境：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ deactivate</span><br></pre></td></tr></table></figure><br><img src="/images/2018/02/02/env.png" alt=""><br>啟用時前面會出現(yoga.env)的字樣<br>建立的環境會出現在 Home 中（在 finder 中按 command + ctrl + H）<br><img src="/images/2018/02/02/env_file.png" alt=""></p>
-<h3 id="Part-3-install-openCV"><a href="#Part-3-install-openCV" class="headerlink" title="Part 3 install openCV"></a>Part 3 install openCV</h3><h4 id="Method-1：透過-pip-安裝-Windows-適用）"><a href="#Method-1：透過-pip-安裝-Windows-適用）" class="headerlink" title="Method 1：透過 pip 安裝 ( Windows 適用）"></a>Method 1：透過 pip 安裝 ( Windows 適用）</h4><p>利用 Homebrew 安裝 pip<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ brew isntall pip</span><br></pre></td></tr></table></figure><br>在使用 pip 安裝 openCV3<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install opencv-python</span><br></pre></td></tr></table></figure><br>[註] pip 安裝如果是以上面方法安裝python的話，需在 pip 後面加上 2 或 3 來指定是安裝在哪個環境中</p>
-<h4 id="Method-2：透過homebrew安裝"><a href="#Method-2：透過homebrew安裝" class="headerlink" title="Method 2：透過homebrew安裝"></a>Method 2：透過homebrew安裝</h4><p>如果之前有使用openCV先前的版本要刪除的話<br>在安裝前先執行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ brew uninstall --force opencv</span><br></pre></td></tr></table></figure><br>之後安裝<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ brew install opencv</span><br></pre></td></tr></table></figure><br>在安裝OpenCV的時候，homebrew會要同時綁定Python2與3，所以如果沒有安裝Python3的話在這個時候homebrew會連帶安裝。</p>
-<p><font color="#FF0000">安裝完後要更新連結：</font><br>For Python2:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ echo /usr/local/opt/opencv3/lib/python2.7/site-packages &gt;&gt; /usr/local/lib/python2.7/site-packages/opencv3.pth</span><br></pre></td></tr></table></figure><br>For Python3:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ echo /usr/local/opt/opencv3/lib/python3.6/site-packages &gt;&gt; /usr/local/lib/python3.6/site-packages/opencv3.pth</span><br></pre></td></tr></table></figure><br>OpenCV安裝的位址一樣在/usr/local/Cellar</p>
-<p>最後在terminal中啟動ipython<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ipython</span><br></pre></td></tr></table></figure><br>測試openCV能不能被使用<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Import cv2     <span class="comment">#沒出錯表示沒問題</span></span><br><span class="line">print(cv2.__version__)       <span class="comment">#查看openCV版本</span></span><br></pre></td></tr></table></figure><br><img src="/images/2018/02/02/cv2_test.png" alt=""></p>
+        <p>OpenCV 是運行在 Pytho 或 C++ 上的圖像處理庫，當中包含很多圖像特徵擷取的方法，以及對於圖像處理的運算等。<br>接下來主要是在 MAC OS + jupyter notebook + Python3.6 + OpenCV3.3.0 的環境下運行<br><a id="more"></a></p>
+<h3 id="basic-I-O"><a href="#basic-I-O" class="headerlink" title="basic I/O"></a>basic I/O</h3><p>input image : cv2.imread(“path_of_image.jpg”)<br>save image : cv2.imwrite(“name”,image)<br>show image :<br>a. unsing cv2<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cv2.imshow(image)</span><br><span class="line">cv2.waitKey()</span><br><span class="line">cv2.destroyAllWindows()</span><br></pre></td></tr></table></figure><br>b. using matplotlib.pyplot<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">plt.imshow(image)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure><br>example:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#import 相關套件</span></span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> matplotlib.image <span class="keyword">as</span> mpimg</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="comment"># input 第二個參數帶 0 可以將輸入灰階化</span></span><br><span class="line"><span class="comment"># cv2.imread 預設是使用 BGR 通道順序輸入，這與 Matplotlib 的顯示，或者讀取圖片的 RGB 通道不同</span></span><br><span class="line">plt.figure(figsize=(<span class="number">18</span>, <span class="number">10</span>))</span><br><span class="line">imgbgr = cv2.imread(<span class="string">"/Users/yoga/Desktop/star.png"</span>)</span><br><span class="line">imgray = cv2.imread(<span class="string">"/Users/yoga/Desktop/star.png"</span>, <span class="number">0</span>)</span><br><span class="line">imgorg = mpimg.imread(<span class="string">"/Users/yoga/Desktop/star.png"</span>)</span><br><span class="line"> </span><br><span class="line"><span class="comment">#使用 matplotlib 輸入原圖或可以使用下面轉換方式把cv2的BGR轉為RGB</span></span><br><span class="line">b,g,r = cv2.split(imgbgr)</span><br><span class="line">imgrgb = cv2.merge([r,g,b])</span><br><span class="line"> </span><br><span class="line">plt.subplot(<span class="number">131</span>)</span><br><span class="line">plt.imshow(imgbgr)</span><br><span class="line">plt.title(<span class="string">"bgr"</span>)</span><br><span class="line"> </span><br><span class="line">plt.subplot(<span class="number">132</span>)</span><br><span class="line">plt.imshow(imgray)</span><br><span class="line">plt.title(<span class="string">"gray"</span>)</span><br><span class="line"> </span><br><span class="line">plt.subplot(<span class="number">133</span>)</span><br><span class="line">plt.imshow(imgorg)</span><br><span class="line">plt.title(<span class="string">"original"</span>)</span><br><span class="line"> </span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure><br>結果輸出為<br><img src="/images/2018/02/04/imread.png" alt=""><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># imwrite 儲存完後的 return 為 True</span></span><br><span class="line">cv2.imwrite(<span class="string">'star1.png'</span>,imgbgr)</span><br></pre></td></tr></table></figure><br>(jupyter notebook)儲存後會放在與程式碼相同的workspace下:<br><img src="/images/2018/02/04/擷取.png" alt=""><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># OpenCV 對於圖像的輸入型態會轉成2D或3D的nparray</span></span><br><span class="line"><span class="comment"># 3D 為彩色 2D 為灰階，可以從np.shape()查看</span></span><br><span class="line"><span class="keyword">print</span> (<span class="string">"3D為彩色"</span>,np.shape(imgbgr))</span><br><span class="line"><span class="keyword">print</span> (<span class="string">"2D為灰階"</span>,np.shape(imgray))</span><br></pre></td></tr></table></figure><br>Ouyput:<br><img src="/images/2018/02/04/return.png" alt=""><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 從 nparray 製作隨機圖</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">randomArray = bytearray(os.urandom(<span class="number">120000</span>))</span><br><span class="line">flatNumpyArray = np.array(randomArray)</span><br><span class="line"> </span><br><span class="line">grayImage = flatNumpyArray.reshape(<span class="number">300</span>,<span class="number">400</span>)</span><br><span class="line">cv2.imwrite(<span class="string">'randomgray.png'</span>,grayImage)</span><br><span class="line"> </span><br><span class="line">bgrImg = flatNumpyArray.reshape(<span class="number">100</span>,<span class="number">400</span>,<span class="number">3</span>)</span><br><span class="line">cv2.imwrite(<span class="string">'randombgr.png'</span>,bgrImg)</span><br></pre></td></tr></table></figure><br>randomgray.png<br><img src="/images/2018/02/04/randomgray.png" alt=""><br>randombgr.png<br><img src="/images/2018/02/04/randombgr.png" alt=""></p>
 
       
     </div>
@@ -389,8 +381,6 @@
           
             <a href="/tags/Python/" rel="tag"># Python</a>
           
-            <a href="/tags/macOS/" rel="tag"># macOS</a>
-          
         </div>
       
 
@@ -402,8 +392,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/02/02/TensorFlow-Keras-深度學習筆記4/" rel="next" title="TensorFlow + Keras 深度學習筆記4">
-                <i class="fa fa-chevron-left"></i> TensorFlow + Keras 深度學習筆記4
+              <a href="/2018/02/02/OpenCV-Install-OpenCV3-on-macOS/" rel="next" title="OpenCV:Install OpenCV3 on macOS">
+                <i class="fa fa-chevron-left"></i> OpenCV:Install OpenCV3 on macOS
               </a>
             
           </div>
@@ -412,8 +402,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/02/04/OprnCV-Introduction/" rel="prev" title="OprnCV : Introduction">
-                OprnCV : Introduction <i class="fa fa-chevron-right"></i>
+              <a href="/2018/02/04/OpenCV-Processing-Images-with-OpenCV-3/" rel="prev" title="OpenCV : Processing Images with OpenCV 3">
+                OpenCV : Processing Images with OpenCV 3 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -584,7 +574,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenCV安裝分為三個部分："><span class="nav-number">1.</span> <span class="nav-text">OpenCV安裝分為三個部分：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Part-1-install-homebrew"><span class="nav-number">1.1.</span> <span class="nav-text">Part 1 install homebrew</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Part-2-install-Python"><span class="nav-number">1.2.</span> <span class="nav-text">Part 2 install Python</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Part-3-install-openCV"><span class="nav-number">1.3.</span> <span class="nav-text">Part 3 install openCV</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Method-1：透過-pip-安裝-Windows-適用）"><span class="nav-number">1.3.1.</span> <span class="nav-text">Method 1：透過 pip 安裝 ( Windows 適用）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Method-2：透過homebrew安裝"><span class="nav-number">1.3.2.</span> <span class="nav-text">Method 2：透過homebrew安裝</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#basic-I-O"><span class="nav-number">1.</span> <span class="nav-text">basic I/O</span></a></li></ol></div>
             
 
           </div>

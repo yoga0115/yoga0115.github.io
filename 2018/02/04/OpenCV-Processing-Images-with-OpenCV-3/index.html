@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-tw">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OpenCV,Python," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="說明有關OpenCV3的圖像處理，包含輪廓偵測等等">
+<meta name="keywords" content="OpenCV,Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenCV : Processing Images with OpenCV 3">
+<meta property="og:url" content="http://yoursite.com/2018/02/04/OpenCV-Processing-Images-with-OpenCV-3/index.html">
+<meta property="og:site_name" content="暖陽春草">
+<meta property="og:description" content="說明有關OpenCV3的圖像處理，包含輪廓偵測等等">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/04/threshold.png">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/04/filter.png">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/04/kernel.png">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/04/sobel.png">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/04/canny.png">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/04/houghline.png">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/04/houghcircle.png">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/04/contours.png">
+<meta property="og:updated_time" content="2018-02-04T16:13:04.386Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OpenCV : Processing Images with OpenCV 3">
+<meta name="twitter:description" content="說明有關OpenCV3的圖像處理，包含輪廓偵測等等">
+<meta name="twitter:image" content="http://yoursite.com/images/2018/02/04/threshold.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/04/OpenCV-Processing-Images-with-OpenCV-3/"/>
+
+
+
+
+
+  <title>OpenCV : Processing Images with OpenCV 3 | 暖陽春草</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">暖陽春草</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Divide and Conquer.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/04/OpenCV-Processing-Images-with-OpenCV-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yoga Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="暖陽春草">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">OpenCV : Processing Images with OpenCV 3</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-02-04T22:35:37+08:00">
+                2018-02-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenCV/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenCV</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>說明有關OpenCV3的圖像處理，包含輪廓偵測等等<br><a id="more"></a></p>
+<h3 id="The-Fourier-Transform（傅葉爾轉換）"><a href="#The-Fourier-Transform（傅葉爾轉換）" class="headerlink" title="The Fourier Transform（傅葉爾轉換）"></a>The Fourier Transform（傅葉爾轉換）</h3><p>在 OpenCV 中所做的圖像或影像處理幾乎都會用到 Fourier Transform 的概念，及內容大概是說：所有的波形都是一群不同頻率的正弦函數的總和。<br>這個概念使得OpenCV在圖像的操作上可以運行，因為透過不同的訊號（可能是圖像的Pixels）可以感測出圖型的區塊等等。</p>
+<h3 id="Threshold"><a href="#Threshold" class="headerlink" title="Threshold"></a>Threshold</h3><ol>
+<li>決定一個 threshold 可以使整幅圖像分成了非黑即白的二值圖像</li>
+<li>cv2.threshold(image, 進行分類的閾值, 高於（低於）閾值時賦予的新值, 方法選擇參數)</li>
+<li>該函數有兩個返回值，第一個retVal，第二個就是處理後的圖像。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> matplotlib.image <span class="keyword">as</span> mpimg</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">  </span><br><span class="line">img = cv2.imread(<span class="string">'/Users/yoga/Desktop/star.png'</span>,<span class="number">0</span>)</span><br><span class="line">plt.figure(figsize=(<span class="number">18</span>, <span class="number">10</span>))</span><br><span class="line">ret,thresh1 = cv2.threshold(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_BINARY)</span><br><span class="line">ret,thresh2 = cv2.threshold(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_BINARY_INV)</span><br><span class="line">ret,thresh3 = cv2.threshold(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_TRUNC)</span><br><span class="line">ret,thresh4 = cv2.threshold(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_TOZERO)</span><br><span class="line">ret,thresh5 = cv2.threshold(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_TOZERO_INV)</span><br><span class="line">titles = [<span class="string">'img'</span>,<span class="string">'BINARY'</span>,<span class="string">'BINARY_INV'</span>,<span class="string">'TRUNC'</span>,<span class="string">'TOZERO'</span>,<span class="string">'TOZERO_INV'</span>]</span><br><span class="line">images = [img,thresh1,thresh2,thresh3,thresh4,thresh5]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">6</span>):</span><br><span class="line">    plt.subplot(<span class="number">2</span>,<span class="number">3</span>,i+<span class="number">1</span>),plt.imshow(images[i],<span class="string">'gray'</span>)</span><br><span class="line">    plt.title(titles[i])</span><br><span class="line">    plt.xticks([]),plt.yticks([])</span><br><span class="line">plt.show()</span><br><span class="line"><span class="comment">#輸出如下</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/2018/02/04/threshold.png" alt=""></p>
+<h3 id="Filter"><a href="#Filter" class="headerlink" title="Filter"></a>Filter</h3><ol>
+<li>Opencv提供的一個通用的2D濾波函數為cv2.filter2D()，其運算過程即為卷積運算：<br>使用一個kernel，對圖像的濾波操作過程為：將kernel放在圖像的一個像素A上，求與之對應的圖像上的每個像素點的和，kernal不同，得到的結果不同<br>[補] kermel是應用於圖像中的區域以在目標圖像中生成單個像素的一組權重。</li>
+<li>cv2.blur 和 cv2.boxFilter 是用在 filter 的 kernel 為均值時</li>
+<li>cv2.GaussianBlur()是把 kernel 換為一組符合高斯分佈的數值</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#1. cv2.filter2D() example</span></span><br><span class="line">img = cv2.imread(<span class="string">"/Users/yoga/Desktop/star.png"</span>,<span class="number">0</span>)</span><br><span class="line">img1 = np.float32(img) <span class="comment">#轉化為數值類型</span></span><br><span class="line">kernel = np.ones((<span class="number">5</span>,<span class="number">5</span>),np.float32)/<span class="number">25</span></span><br><span class="line">  </span><br><span class="line">dst = cv2.filter2D(img1,<span class="number">-1</span>,kernel)</span><br><span class="line"><span class="comment">#cv2.filter2D(src,dst,kernel,auchor=(-1,-1))函數：</span></span><br><span class="line"><span class="comment">#輸出圖像與輸入圖像大小相同</span></span><br><span class="line"><span class="comment">#中間的數為-1，輸出數值格式的相同</span></span><br><span class="line">  </span><br><span class="line"><span class="comment">#2. cv2.blur() example</span></span><br><span class="line">blur = cv2.blur(img,(<span class="number">3</span>,<span class="number">5</span>)) <span class="comment">#kernel大小3*5</span></span><br><span class="line">  </span><br><span class="line"><span class="comment">#3. cv2.GaussianBlur() example</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2000</span>): <span class="comment">#添加雜訊</span></span><br><span class="line">    temp_x = np.random.randint(<span class="number">0</span>,img.shape[<span class="number">0</span>])</span><br><span class="line">    temp_y = np.random.randint(<span class="number">0</span>,img.shape[<span class="number">1</span>])</span><br><span class="line">    img[temp_x][temp_y] = <span class="number">255</span></span><br><span class="line">gblur = cv2.GaussianBlur(img,(<span class="number">5</span>,<span class="number">5</span>),<span class="number">0</span>)</span><br><span class="line">  </span><br><span class="line">plt.figure(figsize=(<span class="number">18</span>, <span class="number">10</span>))</span><br><span class="line">plt.subplot(<span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>),plt.imshow(img1,<span class="string">'gray'</span>),plt.title(<span class="string">"original"</span>)</span><br><span class="line">plt.subplot(<span class="number">2</span>,<span class="number">3</span>,<span class="number">2</span>),plt.imshow(dst,<span class="string">'gray'</span>),plt.title(<span class="string">"cv2.filter2D"</span>)</span><br><span class="line">plt.subplot(<span class="number">2</span>,<span class="number">3</span>,<span class="number">3</span>),plt.imshow(blur,<span class="string">'gray'</span>),plt.title(<span class="string">"cv2.blur"</span>)</span><br><span class="line">plt.subplot(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>),plt.imshow(img,<span class="string">'gray'</span>),plt.title(<span class="string">"original_with_noise"</span>)</span><br><span class="line">plt.subplot(<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>),plt.imshow(gblur,<span class="string">'gray'</span>),plt.title(<span class="string">"noise_after_GaussianBlur"</span>)</span><br><span class="line">plt.show()</span><br><span class="line"><span class="comment">#輸出如下</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/2018/02/04/filter.png" alt=""><br>Kernel :<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 用自己設定的 kernel 進行卷積，與高斯模糊後的差值比較</span></span><br><span class="line"><span class="keyword">from</span> scipy <span class="keyword">import</span> ndimage</span><br><span class="line">kernel_3x3 = np.array([[<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>],[<span class="number">-1</span>,<span class="number">8</span>,<span class="number">-1</span>],[<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>]])</span><br><span class="line">kernel_5x5 = np.array([[<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>],</span><br><span class="line">                     [<span class="number">-1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">-1</span>],</span><br><span class="line">                     [<span class="number">-1</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">-1</span>],</span><br><span class="line">                     [<span class="number">-1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">-1</span>],</span><br><span class="line">                     [<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>]])</span><br><span class="line">  </span><br><span class="line">img = cv2.imread(<span class="string">"/Users/yoga/Desktop/star.png"</span>,<span class="number">0</span>)</span><br><span class="line">k3 = ndimage.convolve(img, kernel_3x3)</span><br><span class="line">k5 = ndimage.convolve(img, kernel_5x5)</span><br><span class="line">  </span><br><span class="line">blurred = cv2.GaussianBlur(img,(<span class="number">11</span>,<span class="number">11</span>),<span class="number">0</span>)</span><br><span class="line">g_hpf = img - blurred</span><br><span class="line">  </span><br><span class="line">plt.figure(figsize=(<span class="number">18</span>, <span class="number">10</span>))</span><br><span class="line">plt.subplot(<span class="number">132</span>)</span><br><span class="line">plt.imshow(k3)</span><br><span class="line">plt.title(<span class="string">'kernel_3x3'</span>)</span><br><span class="line">  </span><br><span class="line">plt.subplot(<span class="number">133</span>)</span><br><span class="line">plt.imshow(k5)</span><br><span class="line">plt.title(<span class="string">'kernel_5x5'</span>)</span><br><span class="line">  </span><br><span class="line">plt.subplot(<span class="number">131</span>)</span><br><span class="line">plt.imshow(g_hpf)</span><br><span class="line">plt.title(<span class="string">'g_hpf'</span>)</span><br><span class="line">  </span><br><span class="line">plt.show()</span><br><span class="line"><span class="comment">#輸出如下</span></span><br></pre></td></tr></table></figure><br><img src="/images/2018/02/04/kernel.png" alt=""></p>
+<h3 id="邊緣檢測"><a href="#邊緣檢測" class="headerlink" title="邊緣檢測"></a>邊緣檢測</h3><p>提取圖像的邊緣（不管是橫向的、縱向的、斜方向的等等），所需要的無非也是一個kernel，kernel的不同結果也不同。</p>
+<ol>
+<li>Sobel and Scharr<br>是具有方向性的<br>Sobel_x = np.array[[-1, 0, 1],[-2, 0, 2],[-1, 0, 1]]<br>Sobel_y = np.array[[-1, -2, -1],[0, 0, 0],[1, 2, 1]]<br>Scharr_x = np.array[[-3, 0, 3],[-10, 0, 10],[-3, 0, 3]]<br>Scharr_y = np.array[[-3, -10, -3],[0, 0, 0],[3, 10, 3]]</li>
+<li>Laplacian<br>kernel = np.array[[0, 1, 0],[1, -4, 1],[0, 1, 1]]</li>
+<li>Canny<br><a href="https://en.wikipedia.org/wiki/Canny_edge_detector" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Canny_edge_detector</a></li>
+</ol>
+<p>Sobel :<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#example sobel and laplacian</span></span><br><span class="line">img = cv2.imread(<span class="string">"/Users/yoga/Desktop/star.png"</span>,<span class="number">0</span>)</span><br><span class="line">sobelx = cv2.Sobel(img,cv2.CV_64F,<span class="number">1</span>,<span class="number">0</span>,ksize=<span class="number">3</span>)</span><br><span class="line">sobely = cv2.Sobel(img,cv2.CV_64F,<span class="number">0</span>,<span class="number">1</span>)</span><br><span class="line">sobelxy = cv2.Sobel(img,cv2.CV_64F,<span class="number">1</span>,<span class="number">1</span>) <span class="comment">#cv2.CV_64改變輸出圖像的數據類型</span></span><br><span class="line">laplacian = cv2.Laplacian(img,cv2.CV_64F)</span><br><span class="line"><span class="comment">#人工生成一個kernel，去和函數生成的比較</span></span><br><span class="line">kernel = np.array([[<span class="number">0</span>,<span class="number">-1</span>,<span class="number">0</span>],[<span class="number">-1</span>,<span class="number">4</span>,<span class="number">-1</span>],[<span class="number">0</span>,<span class="number">-1</span>,<span class="number">0</span>]],np.float32)<span class="comment">#</span></span><br><span class="line">img1 = np.float64(img) <span class="comment">#改變原始圖像的數據類型</span></span><br><span class="line">img_filter = cv2.filter2D(img1,<span class="number">-1</span>,kernel) <span class="comment">#原始圖像轉換後第二個參數可以改為-1</span></span><br><span class="line">sobelxy1 = cv2.Sobel(img1,<span class="number">-1</span>,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">plt.figure(figsize=(<span class="number">18</span>, <span class="number">10</span>))</span><br><span class="line">plt.subplot(<span class="number">231</span>),plt.imshow(sobelx,<span class="string">'gray'</span>),plt.title(<span class="string">"sobelx"</span>)</span><br><span class="line">plt.subplot(<span class="number">232</span>),plt.imshow(sobely,<span class="string">'gray'</span>),plt.title(<span class="string">"sobely"</span>)</span><br><span class="line">plt.subplot(<span class="number">233</span>),plt.imshow(sobelxy,<span class="string">'gray'</span>),plt.title(<span class="string">"sobelxy"</span>)</span><br><span class="line">plt.subplot(<span class="number">234</span>),plt.imshow(laplacian,<span class="string">'gray'</span>),plt.title(<span class="string">"laplacian"</span>)</span><br><span class="line">plt.subplot(<span class="number">235</span>),plt.imshow(img_filter,<span class="string">'gray'</span>),plt.title(<span class="string">"img_filter"</span>)</span><br><span class="line">plt.subplot(<span class="number">236</span>),plt.imshow(img,<span class="string">'gray'</span>),plt.title(<span class="string">"orignal"</span>)</span><br><span class="line">  </span><br><span class="line">plt.show()</span><br><span class="line"><span class="comment">#輸出如下</span></span><br></pre></td></tr></table></figure><br><img src="/images/2018/02/04/sobel.png" alt=""></p>
+<p>Canny :<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Canny example</span></span><br><span class="line">img = cv2.imread(<span class="string">'/Users/yoga/Desktop/star.png'</span>,<span class="number">0</span>)</span><br><span class="line">edges = cv2.Canny(img,<span class="number">100</span>,<span class="number">200</span>)</span><br><span class="line">plt.figure(figsize=(<span class="number">18</span>, <span class="number">5</span>))</span><br><span class="line">plt.subplot(<span class="number">121</span>),plt.imshow(img,<span class="string">'gray'</span>)</span><br><span class="line">plt.subplot(<span class="number">122</span>),plt.imshow(edges,<span class="string">'gray'</span>)</span><br><span class="line">plt.show()</span><br><span class="line"><span class="comment">#輸出如下</span></span><br></pre></td></tr></table></figure><br><img src="/images/2018/02/04/canny.png" alt=""></p>
+<h3 id="HoughLines-and-HoughCircle-用來偵測直線與圓"><a href="#HoughLines-and-HoughCircle-用來偵測直線與圓" class="headerlink" title="HoughLines and HoughCircle 用來偵測直線與圓"></a>HoughLines and HoughCircle 用來偵測直線與圓</h3><p>hough變換原理介紹：<br><a href="http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_imgproc/py_houghlines/py_houghlines.html" target="_blank" rel="noopener">http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_imgproc/py_houghlines/py_houghlines.html</a></p>
+<p>hough變換在算法設計上可以如下步驟：(截自：<a href="http://blog.csdn.net/on2way/article/details/47028969" target="_blank" rel="noopener">http://blog.csdn.net/on2way/article/details/47028969</a>)</p>
+<ol>
+<li>將參數空間(ρ,θ)量化，賦初值一個二維矩陣M，M(ρ,θ)就是一個累加器了。</li>
+<li>然後對圖像邊界上的每一個點進行變換，變換到屬於哪一組(ρ,θ)，就把該組(ρ,θ)對應的累加器數加1。</li>
+<li>當所有點處理完成後，就來分析得到的M(ρ,θ)，設置一個閾值T，認為當M(ρ,θ)&gt;T，就認為存在一條有意義的直線存在。而對應的M(ρ,θ)就是這組直線的參數。</li>
+<li>有了M(ρ,θ)和點（x,y）計算出來這個直線就ok了。</li>
+</ol>
+<h4 id="HoughLine"><a href="#HoughLine" class="headerlink" title="HoughLine"></a>HoughLine</h4><p>HoughLine 相關的檢測函數有 cv2.HoughLines() and cv2.HoughLinesP()<br>cv2.HoughLines 的運算比較精確，cv2.HoughLinesP 比較節省運算資源<br>cv2.HoughLines returns an array of (ρ,θ)<br>cv2.HoughLines has four inputs: img(binary), ρ and θ accuracies, threshold(T)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#cv2.HoughLines() example</span></span><br><span class="line">%matplotlib notebook</span><br><span class="line">img = cv2.imread(<span class="string">'/Users/yoga/Desktop/sudoku.png'</span>)</span><br><span class="line">gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)</span><br><span class="line"><span class="comment"># Apply Canny edge detection, return will be a binary image</span></span><br><span class="line">edges = cv2.Canny(gray,<span class="number">50</span>,<span class="number">100</span>,apertureSize = <span class="number">3</span>)</span><br><span class="line"><span class="comment"># Apply Hough Line Transform, minimum lenght of line is 200 pixels</span></span><br><span class="line">lines = cv2.HoughLines(edges,<span class="number">1</span>,np.pi/<span class="number">180</span>,<span class="number">200</span>)</span><br><span class="line"><span class="comment"># Print and draw line on the original image</span></span><br><span class="line">lines1 = lines[:,<span class="number">0</span>,:]</span><br><span class="line"><span class="keyword">for</span> rho,theta <span class="keyword">in</span> lines1[:]:</span><br><span class="line">    <span class="comment">#print(rho, theta)</span></span><br><span class="line">    a = np.cos(theta)</span><br><span class="line">    b = np.sin(theta)</span><br><span class="line">    x0 = a*rho</span><br><span class="line">    y0 = b*rho</span><br><span class="line">    x1 = int(x0 + <span class="number">1000</span>*(-b))</span><br><span class="line">    y1 = int(y0 + <span class="number">1000</span>*(a))</span><br><span class="line">    x2 = int(x0 - <span class="number">1000</span>*(-b))</span><br><span class="line">    y2 = int(y0 - <span class="number">1000</span>*(a))</span><br><span class="line">    cv2.line(img,(x1,y1),(x2,y2),(<span class="number">0</span>,<span class="number">0</span>,<span class="number">255</span>),<span class="number">2</span>)</span><br><span class="line">     </span><br><span class="line">plt.figure(<span class="string">"Hough Line Transform"</span>)</span><br><span class="line">plt.imshow(img)</span><br><span class="line">plt.title(<span class="string">'sudoku'</span>)</span><br><span class="line">plt.show()</span><br><span class="line"><span class="comment">#輸出如下</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/2018/02/04/houghline.png" alt=""></p>
+<h4 id="HoughCircle"><a href="#HoughCircle" class="headerlink" title="HoughCircle"></a>HoughCircle</h4><p>cv2.HoughCircles(image, method, dp, minDist, circles, param1, param2, minRadius, maxRadius)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#cv2.HoughCircles() example</span></span><br><span class="line">%matplotlib notebook</span><br><span class="line">  </span><br><span class="line">image = mpimg.imread(<span class="string">'/Users/yoga/Desktop/coins.jpg'</span>)</span><br><span class="line">gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)</span><br><span class="line">blurred = cv2.GaussianBlur(gray, (<span class="number">5</span>,<span class="number">5</span>), <span class="number">0</span>)</span><br><span class="line">circles = cv2.HoughCircles(blurred, cv2.HOUGH_GRADIENT, <span class="number">1</span>, <span class="number">80</span>, param1=<span class="number">100</span>, param2=<span class="number">80</span>, minRadius=<span class="number">10</span>, maxRadius=<span class="number">120</span>)</span><br><span class="line">  </span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> circles[<span class="number">0</span>,:]:</span><br><span class="line">    cv2.circle(image, (i[<span class="number">0</span>],i[<span class="number">1</span>]),i[<span class="number">2</span>],(<span class="number">0</span>,<span class="number">255</span>,<span class="number">0</span>),<span class="number">2</span>) <span class="comment">#畫園</span></span><br><span class="line">    cv2.circle(image, (i[<span class="number">0</span>],i[<span class="number">1</span>]),<span class="number">2</span>,(<span class="number">0</span>,<span class="number">0</span>,<span class="number">255</span>),<span class="number">3</span>) <span class="comment">#畫圓心</span></span><br><span class="line">  </span><br><span class="line">plt.figure(<span class="string">"Hough Circle Transform"</span>)</span><br><span class="line">plt.gray()</span><br><span class="line">plt.imshow(image)</span><br><span class="line">plt.title(<span class="string">'Coins'</span>)</span><br><span class="line">plt.show()</span><br><span class="line"><span class="comment">#輸出如下</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/2018/02/04/houghcircle.png" alt=""></p>
+<h3 id="Contour輪廓偵測"><a href="#Contour輪廓偵測" class="headerlink" title="Contour輪廓偵測"></a>Contour輪廓偵測</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#輪廓偵測</span></span><br><span class="line">img = cv2.pyrDown(cv2.imread(<span class="string">"/Users/yoga/Desktop/hammer.jpg"</span>, cv2.IMREAD_UNCHANGED))</span><br><span class="line">  </span><br><span class="line">ret, thresh = cv2.threshold(cv2.cvtColor(img.copy(), cv2.COLOR_BGR2GRAY) , <span class="number">127</span>, <span class="number">255</span>, cv2.THRESH_BINARY)</span><br><span class="line">image, contours, hier = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)</span><br><span class="line">  </span><br><span class="line"><span class="keyword">for</span> c <span class="keyword">in</span> contours:</span><br><span class="line">    <span class="comment"># find bounding box coordinates</span></span><br><span class="line">    x,y,w,h = cv2.boundingRect(c)</span><br><span class="line">    cv2.rectangle(img, (x,y), (x+w, y+h), (<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>), <span class="number">2</span>)</span><br><span class="line">  </span><br><span class="line">    <span class="comment"># find minimum area</span></span><br><span class="line">    rect = cv2.minAreaRect(c)</span><br><span class="line">    <span class="comment"># calculate coordinates of the minimum area rectangle</span></span><br><span class="line">    box = cv2.boxPoints(rect)</span><br><span class="line">    <span class="comment"># normalize coordinates to integers</span></span><br><span class="line">    box = np.int0(box)</span><br><span class="line">    <span class="comment"># draw contours</span></span><br><span class="line">    cv2.drawContours(img, [box], <span class="number">0</span>, (<span class="number">0</span>,<span class="number">0</span>, <span class="number">255</span>), <span class="number">3</span>)</span><br><span class="line">   </span><br><span class="line">    <span class="comment"># calculate center and radius of minimum enclosing circle</span></span><br><span class="line">    (x,y),radius = cv2.minEnclosingCircle(c)</span><br><span class="line">    <span class="comment"># cast to integers</span></span><br><span class="line">    center = (int(x),int(y))</span><br><span class="line">    radius = int(radius)</span><br><span class="line">    <span class="comment"># draw the circle</span></span><br><span class="line">    img = cv2.circle(img,center,radius,(<span class="number">0</span>,<span class="number">255</span>,<span class="number">0</span>),<span class="number">2</span>)</span><br><span class="line">  </span><br><span class="line">cv2.drawContours(img, contours, <span class="number">-1</span>, (<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="number">1</span>)</span><br><span class="line">plt.imshow(img)</span><br><span class="line">plt.show()</span><br><span class="line"><span class="comment">#輸出如下</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/2018/02/04/contours.png" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OpenCV/" rel="tag"># OpenCV</a>
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/04/OprnCV-Introduction/" rel="next" title="OprnCV : Introduction">
+                <i class="fa fa-chevron-left"></i> OprnCV : Introduction
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Yoga Chen" />
+            
+              <p class="site-author-name" itemprop="name">Yoga Chen</p>
+              <p class="site-description motion-element" itemprop="description">Divide and Conquer.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yoga0115" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/820115Yoga" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.linkedin.com/in/%E7%A5%90%E5%98%89-%E9%99%B3-862620155/" target="_blank" title="linkedin">
+                      
+                        <i class="fa fa-fw fa-globe"></i>linkedin</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/yoga820115" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Facebook</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yoga820115@gmail.com" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Google</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#The-Fourier-Transform（傅葉爾轉換）"><span class="nav-number">1.</span> <span class="nav-text">The Fourier Transform（傅葉爾轉換）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Threshold"><span class="nav-number">2.</span> <span class="nav-text">Threshold</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Filter"><span class="nav-number">3.</span> <span class="nav-text">Filter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#邊緣檢測"><span class="nav-number">4.</span> <span class="nav-text">邊緣檢測</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HoughLines-and-HoughCircle-用來偵測直線與圓"><span class="nav-number">5.</span> <span class="nav-text">HoughLines and HoughCircle 用來偵測直線與圓</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HoughLine"><span class="nav-number">5.1.</span> <span class="nav-text">HoughLine</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HoughCircle"><span class="nav-number">5.2.</span> <span class="nav-text">HoughCircle</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Contour輪廓偵測"><span class="nav-number">6.</span> <span class="nav-text">Contour輪廓偵測</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yoga Chen</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 強力驅動</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主題 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
