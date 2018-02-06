@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-tw">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="機器學習,人工智慧學校," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="陳彥呈博士＠人工智慧學校第一部分的主題：機器學習概論">
+<meta name="keywords" content="機器學習,人工智慧學校">
+<meta property="og:type" content="article">
+<meta property="og:title" content="機器學習基礎與演算法筆記1">
+<meta property="og:url" content="http://yoursite.com/2018/02/05/機器學習基礎與演算法筆記1/index.html">
+<meta property="og:site_name" content="暖陽春草">
+<meta property="og:description" content="陳彥呈博士＠人工智慧學校第一部分的主題：機器學習概論">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="http://yoursite.com/2018/02/05/機器學習基礎與演算法筆記1/images/2018/02/05/map_for_ML.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/05/機器學習基礎與演算法筆記1/images/2018/02/05/p_theory.png">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/05/db.PNG">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/05/vb.PNG">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/05/Discriminativ.PNG">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/05/Generative.PNG">
+<meta property="og:updated_time" content="2018-02-06T16:48:52.713Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="機器學習基礎與演算法筆記1">
+<meta name="twitter:description" content="陳彥呈博士＠人工智慧學校第一部分的主題：機器學習概論">
+<meta name="twitter:image" content="http://yoursite.com/2018/02/05/機器學習基礎與演算法筆記1/images/2018/02/05/map_for_ML.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/05/機器學習基礎與演算法筆記1/"/>
+
+
+
+
+
+  <title>機器學習基礎與演算法筆記1 | 暖陽春草</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">暖陽春草</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Divide and Conquer.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/05/機器學習基礎與演算法筆記1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yoga Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="暖陽春草">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">機器學習基礎與演算法筆記1</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-02-05T09:22:29+08:00">
+                2018-02-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/學習筆記/" itemprop="url" rel="index">
+                    <span itemprop="name">學習筆記</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>陳彥呈博士＠人工智慧學校<br>第一部分的主題：機器學習概論<br><a id="more"></a></p>
+<p>課程影片：<br><a href="https://youtu.be/1iKpj6Bmo38" target="_blank" rel="noopener">2018/02/05人工智慧學校-機器學習基礎與演算法part1</a><br><a href="https://youtu.be/ptXFeibDVts" target="_blank" rel="noopener">2018/02/05人工智慧學校-機器學習基礎與演算法part2</a></p>
+<h2 id="機器學習概論"><a href="#機器學習概論" class="headerlink" title="機器學習概論"></a>機器學習概論</h2><h3 id="What-is-Machine-Learning"><a href="#What-is-Machine-Learning" class="headerlink" title="What is Machine Learning"></a>What is Machine Learning</h3><p>Human Learning &gt; Manual Programming &gt; Machine Learning</p>
+<p>Manual Programming 是經由人類學習之後創造的規則寫成程式來讓機器運作，但世界上充滿了<font color="#FF0000">雜訊（Noise）</font>也就是所謂的例外狀況，<br>這些雜訊相對於一般狀況（訓練資料）可能很久才會出現一次，Machine Learning 的出現就是為了能有效處理這些雜訊。</p>
+<h4 id="When-to-manual-program"><a href="#When-to-manual-program" class="headerlink" title="When to manual program?"></a>When to manual program?</h4><ul>
+<li>有固定不變的結果的問題</li>
+<li>Problems lacking data</li>
+<li>Problems with easily separable data</li>
+</ul>
+<h4 id="When-to-use-machine-learning"><a href="#When-to-use-machine-learning" class="headerlink" title="When to use machine learning?"></a>When to use machine learning?</h4><ul>
+<li>有雜訊的資料</li>
+<li>高維度資料</li>
+<li>資料量很大</li>
+<li>資料可能有時間序問題</li>
+</ul>
+<h3 id="A-simple-amp-usable-map-for-ML"><a href="#A-simple-amp-usable-map-for-ML" class="headerlink" title="A simple &amp; usable map for ML"></a>A simple &amp; usable map for ML</h3><p><img src="images/2018/02/05/map_for_ML.png" alt=""><br>Clustering : 不是很確定有什麼樣的標籤，是在資料探索完之後透過聚類去發現的<br>Classification : 已經有明確的標籤，所以使用監督是學習的方式</p>
+<h3 id="監督是學習中要思考的幾個問題"><a href="#監督是學習中要思考的幾個問題" class="headerlink" title="監督是學習中要思考的幾個問題"></a>監督是學習中要思考的幾個問題</h3><ol>
+<li>資料是如何<font color="#FF0000">分布</font>以及要用什麼樣的<font color="#FF0000">取樣</font>策略？</li>
+</ol>
+<ul>
+<li>如果取樣的資料太多偏頗，容易下出不好的結論</li>
+<li>要一次就取到最好的樣本幾乎是不可能的，所以通常會<font color="#FF0000">取很多次</font>，當取樣次數夠多的時候越能接近真實的分佈情況</li>
+</ul>
+<ol>
+<li>我們要如何表示<font color="#FF0000">特徵</font>？</li>
+<li>如何把資料給<font color="#FF0000">分群</font>？這裡的分群指的是訓練、驗證及測試資料</li>
+<li>訓練出的模型該如何衡量？</li>
+<li>如何在應用場域中如預期般表現？</li>
+</ol>
+<h4 id="機率理論-待補"><a href="#機率理論-待補" class="headerlink" title="機率理論(待補)"></a>機率理論(待補)</h4><p><img src="images/2018/02/05/p_theory.png" alt=""></p>
+<ol>
+<li>Joint probability of X taking the value xi and Y taking thevalue yi :<br> p( X = xi, Y =yi ) = nij / N</li>
+<li>Marginalizing: probability that X takes the value xi irrespective of Y :<br> p(X = xi) = ci , where ci = Njnij</li>
+<li>Conditional Probability : the fraction of instances where Y = yj given that X = xi.</li>
+<li>Product Rule :</li>
+<li>Bayes’ Rule :</li>
+</ol>
+<h4 id="特徵"><a href="#特徵" class="headerlink" title="特徵"></a>特徵</h4><p>在做特徵決定的時候，常常因為主觀印象而有偏頗<br>舉個例子: 區分棒球及網球時以顏色為特徵，但如果出現了黃色的棒球？<br>深度學習最大的貢獻，在圖像的辨識上去學習一些好的特徵</p>
+<h4 id="維度的詛咒"><a href="#維度的詛咒" class="headerlink" title="維度的詛咒"></a>維度的詛咒</h4><ul>
+<li>高維度的空間很難去想像<br>舉個例子：如果我們要看一個球體表面的某個點往球心的方向行走一小段距離，這段距離與出發點所合出的體積，他對總體機的占比為多少？結論是隨著維度的增加，佔比會越來越大，意思就是，當維度越大，球體會越趨近於一個空心的球<br>所以，在高維度空間中，大部分的質量及體積都是在表面；也就是說，<font color="#FF0000">在高維度的資料中，在越表面的地方要去學出特徵往往是更困難的</font>（很玄對吧，這段我也聽不太懂）</li>
+<li>高維度帶來的問題：例如人臉辨識的1:1和1:N的問題</li>
+<li>解決方法：投到一個新的空間上去看，其實某些特徵是可以用距離簡單去計算的</li>
+</ul>
+<h4 id="Splitting"><a href="#Splitting" class="headerlink" title="Splitting"></a>Splitting</h4><ul>
+<li>k-fold cross validation<br>隨機分成多組，輪流做驗證，再把驗證結果做平均</li>
+</ul>
+<h4 id="Decision-Theory"><a href="#Decision-Theory" class="headerlink" title="Decision Theory"></a>Decision Theory</h4><p>讓 misclassification rate 越小<br><img src="/images/2018/02/05/db.PNG" alt=""><br>這個圖是什麼意思？<br>我們有兩個模型，第一個由兩個常態分佈組成（C1)，第二個由一個常態分佈組成（C2)<br>當我們定了一個決策邊界（x）邊界左邊為 C1 右邊為 C2<br>在這樣的情況下，會發生決策錯誤的區域就是紅色、綠色加上藍色區域<br>一個好的決策邊界（threashold) 應該要在哪裡？</p>
+<h4 id="True-False-Positive-Negative"><a href="#True-False-Positive-Negative" class="headerlink" title="True / False, Positive / Negative"></a>True / False, Positive / Negative</h4><ul>
+<li>True positive (TP): sample is an apple, classified as an apple.</li>
+<li>False positive (FP): sample is not an apple, but classified as an apple.</li>
+<li>True negative (TN): sample is not an apple, classified as not an apple.</li>
+<li>False negative (FN): sample is an apple, but misclassified as “not an apple”.<blockquote><p>Precision = TP / (TP + FP)<br>Recall = TP / (TP + FN)<br>F-measure  = 2[precision · recall / (precision + recall)]<br>Accuracy (ACC) = (TP+TN) / (TP + TN + FP + FN)  容易被大量的 TN 影響</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="Generalize"><a href="#Generalize" class="headerlink" title="Generalize"></a>Generalize</h4><p>學習出的模型是不是真的理解？還是只是將相對應的答案記起來</p>
+<ul>
+<li>Bias (偏差) : 訓練出的東西，放到真實的情況一定會有偏差</li>
+<li>Variance (多樣性) : 為了避免 Bias 所以會需要一定的多樣性<br>看個圖來理解一下：<br><img src="/images/2018/02/05/vb.PNG" alt=""></li>
+<li>Fitting<br>Underfitting：模型太過簡單以至於不能 fit 真實情況，有高偏差、少多樣性<br>Overfitting：模型太過擬合以至於不能 fit 真實情況，有低偏差、高多樣性</li>
+<li>Bias-Variance Trade-off<br>Error (mean square error, MSE)   = noise^2 + bias^2 + variance<br>建議：寧願去增加 variance 來降低 noise</li>
+</ul>
+<p>Discriminative Model：學習資料邊界，來區分資料<br><img src="/images/2018/02/05/Discriminativ.PNG" alt=""><br>Generative Model：學習資料模型，來分類資料<br>在使用上要<font color="#FF0000">避免預先假設</font>資料符合什麼樣的模型<br><img src="/images/2018/02/05/Generative.PNG" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/機器學習/" rel="tag"># 機器學習</a>
+          
+            <a href="/tags/人工智慧學校/" rel="tag"># 人工智慧學校</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/04/OpenCV-Processing-Images-with-OpenCV-3/" rel="next" title="OpenCV : Processing Images with OpenCV 3">
+                <i class="fa fa-chevron-left"></i> OpenCV : Processing Images with OpenCV 3
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/05/機器學習基礎與演算法筆記2/" rel="prev" title="機器學習基礎與演算法筆記2">
+                機器學習基礎與演算法筆記2 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Yoga Chen" />
+            
+              <p class="site-author-name" itemprop="name">Yoga Chen</p>
+              <p class="site-description motion-element" itemprop="description">Divide and Conquer.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yoga0115" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/820115Yoga" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.linkedin.com/in/%E7%A5%90%E5%98%89-%E9%99%B3-862620155/" target="_blank" title="linkedin">
+                      
+                        <i class="fa fa-fw fa-globe"></i>linkedin</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/yoga820115" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Facebook</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yoga820115@gmail.com" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Google</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#機器學習概論"><span class="nav-number">1.</span> <span class="nav-text">機器學習概論</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#What-is-Machine-Learning"><span class="nav-number">1.1.</span> <span class="nav-text">What is Machine Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#When-to-manual-program"><span class="nav-number">1.1.1.</span> <span class="nav-text">When to manual program?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#When-to-use-machine-learning"><span class="nav-number">1.1.2.</span> <span class="nav-text">When to use machine learning?</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#A-simple-amp-usable-map-for-ML"><span class="nav-number">1.2.</span> <span class="nav-text">A simple &amp; usable map for ML</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#監督是學習中要思考的幾個問題"><span class="nav-number">1.3.</span> <span class="nav-text">監督是學習中要思考的幾個問題</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#機率理論-待補"><span class="nav-number">1.3.1.</span> <span class="nav-text">機率理論(待補)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#特徵"><span class="nav-number">1.3.2.</span> <span class="nav-text">特徵</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#維度的詛咒"><span class="nav-number">1.3.3.</span> <span class="nav-text">維度的詛咒</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Splitting"><span class="nav-number">1.3.4.</span> <span class="nav-text">Splitting</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Decision-Theory"><span class="nav-number">1.3.5.</span> <span class="nav-text">Decision Theory</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#True-False-Positive-Negative"><span class="nav-number">1.3.6.</span> <span class="nav-text">True / False, Positive / Negative</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Generalize"><span class="nav-number">1.3.7.</span> <span class="nav-text">Generalize</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yoga Chen</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 強力驅動</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主題 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

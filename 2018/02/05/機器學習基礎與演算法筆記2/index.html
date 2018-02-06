@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-tw">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="機器學習,人工智慧學校," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="陳彥呈博士＠人工智慧學校第二部分的主題：回歸 &amp;amp; 維度縮減 &amp;amp; Clustering">
+<meta name="keywords" content="機器學習,人工智慧學校">
+<meta property="og:type" content="article">
+<meta property="og:title" content="機器學習基礎與演算法筆記2">
+<meta property="og:url" content="http://yoursite.com/2018/02/05/機器學習基礎與演算法筆記2/index.html">
+<meta property="og:site_name" content="暖陽春草">
+<meta property="og:description" content="陳彥呈博士＠人工智慧學校第二部分的主題：回歸 &amp;amp; 維度縮減 &amp;amp; Clustering">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/05/PCA.PNG">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/05/PL1.PNG">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/05/PL2.PNG">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/05/ISO.PNG">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/05/more_data.PNG">
+<meta property="og:image" content="http://yoursite.com/2018/02/05/機器學習基礎與演算法筆記2/images/2018/02/05/meanshif.PNG">
+<meta property="og:image" content="http://yoursite.com/2018/02/05/機器學習基礎與演算法筆記2/images/2018/02/05/AvsD.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/02/05/機器學習基礎與演算法筆記2/images/2018/02/05/aggclu.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/05/機器學習基礎與演算法筆記2/images/2018/02/05/DBSCAN.jpg">
+<meta property="og:updated_time" content="2018-02-06T16:43:57.606Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="機器學習基礎與演算法筆記2">
+<meta name="twitter:description" content="陳彥呈博士＠人工智慧學校第二部分的主題：回歸 &amp;amp; 維度縮減 &amp;amp; Clustering">
+<meta name="twitter:image" content="http://yoursite.com/images/2018/02/05/PCA.PNG">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/05/機器學習基礎與演算法筆記2/"/>
+
+
+
+
+
+  <title>機器學習基礎與演算法筆記2 | 暖陽春草</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">暖陽春草</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Divide and Conquer.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/05/機器學習基礎與演算法筆記2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yoga Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="暖陽春草">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">機器學習基礎與演算法筆記2</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-02-05T09:22:35+08:00">
+                2018-02-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/學習筆記/" itemprop="url" rel="index">
+                    <span itemprop="name">學習筆記</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>陳彥呈博士＠人工智慧學校<br>第二部分的主題：回歸 &amp; 維度縮減 &amp; Clustering<br><a id="more"></a><br>課程影片：<br><a href="https://youtu.be/R2W7LO2R66c" target="_blank" rel="noopener"> 2018/02/05人工智慧學校-機器學習基礎與演算法part3 (Dimension Reduction) </a><br><a href="https://youtu.be/BPeRTC8QuNk" target="_blank" rel="noopener"> 2018/02/05人工智慧學校-機器學習基礎與演算法part4-1 (Regression + Clustering ) </a><br><a href="https://youtu.be/ed35z_cK4uQ" target="_blank" rel="noopener">  2018/02/05人工智慧學校-機器學習基礎與演算法part4-2 (Clustering ) </a><br><a href="https://youtu.be/jsb2FLNMt_Y" target="_blank" rel="noopener"> 2018/02/06人工智慧學校-機器學習基礎與演算法part1( Clustering + Classifier ) </a></p>
+<h2 id="Dimension-Reduction"><a href="#Dimension-Reduction" class="headerlink" title="Dimension Reduction"></a>Dimension Reduction</h2><p>這邊參考了不少以前老師的講義 ：<a href="https://sites.google.com/view/mikehsiao/teaching/data-science-for-fintech-application" target="_blank" rel="noopener">Data Science for FinTech Application</a><br>主要目的是希望用<font color="FF0000">較少的變數</font>去解釋原來資料中的<font color="FF0000">大部份變異</font>，亦即期望能將我們手中許多<font color="FF0000">相關性很高的變數</font>轉化成<font color="FF0000">彼此互相獨立的變<br>數</font>，能由其中選取較原始變數個數少，能解釋大部份資料之變異的幾個新變數。</p>
+<ol>
+<li>迴歸分析常遇到一個困擾,就是所謂共線性問題,這是由於預測變數間有高度相關所造成,主成份分析是解決共線性問題之一。</li>
+<li>所謂主成份分析是尋找幾個解釋變數的線性組合,一方面要能保有原來變數大部分的資訊,而且主成份間彼此是獨立的。</li>
+<li>能以“少數”幾個主成份代替原來“多個”解釋變數。</li>
+</ol>
+<h4 id="主成份分析-PCA"><a href="#主成份分析-PCA" class="headerlink" title="主成份分析(PCA)"></a>主成份分析(PCA)</h4><p>學出一個一維度的空間值，再從二維或三圍轉換時資料損失是最小的，補一個以前學校老師的講法：<br>把一組多維的資料拿來看，從不同角度看過去，找到一個角度可以看到最多資料的，即代表Variance是最大的</p>
+<ol>
+<li>找出第一條線，他的Variance是最大的</li>
+<li>找出與第一條線垂直且Variance也是最大的：PCA的第一條線與第二條線要是垂直的，因為有夾角話會導致主變量增加的時候另一個變量也會跟著增加</li>
+</ol>
+<p><img src="/images/2018/02/05/PCA.PNG" alt=""><br>由於 x 和 y 分量共變，x 與 y 的變異數不能完全描述該分布；箭頭的方向對應的共變異數矩陣的特徵向量，其長度為特徵值的平方根。<br>特徵值越大，說明樣本在對應的特徵向量上投影後的平方差越大，樣本點越離散，越容易區分，訊息量也就越多。</p>
+<h4 id="線性判別分析-LDA"><a href="#線性判別分析-LDA" class="headerlink" title="線性判別分析(LDA)"></a>線性判別分析(LDA)</h4><p>訓練一個分類器來達成兩個目標：</p>
+<ol>
+<li>讓資料投影到低維度的空間的時候，投影出的距離是最分開的（Class間的距離是最開的）</li>
+<li>同一個Class間的距離是越小越好</li>
+</ol>
+<h4 id="PCA-and-LDA"><a href="#PCA-and-LDA" class="headerlink" title="PCA and LDA"></a>PCA and LDA</h4><p><img src="/images/2018/02/05/PL1.PNG" alt=""><br><img src="/images/2018/02/05/PL2.PNG" alt=""></p>
+<h4 id="等度量映射-Isomap"><a href="#等度量映射-Isomap" class="headerlink" title="等度量映射(Isomap)"></a>等度量映射(Isomap)</h4><p>降維的目的是找出隱藏在高維數據中的低維結構，可以降低計算的複雜性。Isomap是一種非線性的降維算法。<br>從Isomap的名字上看，它是一種等距映射算法，也就是說降維後的點，兩兩之間距離不變，這個距離是<font color="FF0000">測地距離(Geodesic Distance)</font>。<br>解釋一下測地距離，例如在地球上，要從南極到北極，歐式距離就是兩點之間直線最短，測地距離則是曲線的長度，更符合實際情況。<br>對於測地距離的計算，離得很近的點可以用歐氏距離來代替，離的較遠的點，使用圖論中的最短路徑來逼近。<br>(原文網址：<a href="https://read01.com/aPDPxL.html" target="_blank" rel="noopener">https://read01.com/aPDPxL.html</a>)<br>從圖上來看<br><img src="/images/2018/02/05/ISO.PNG" alt=""><br>A: 歐氏距離示意圖<br>B: 測地距離示意圖<br>C: 降維後示意圖</p>
+<h2 id="Regression"><a href="#Regression" class="headerlink" title="Regression"></a>Regression</h2><p>如果你知道一些有關Ｘ的特性，你可能可以預測出他的Ｙ</p>
+<h4 id="Simple-Linear-Regression"><a href="#Simple-Linear-Regression" class="headerlink" title="Simple Linear Regression"></a>Simple Linear Regression</h4><p>簡單線性迴歸在找出一條線，來預測一個新的值會出現在哪裡？<br>我們找出來的線會是 y = w0 + w1x ，但我們在做預測的時候會加上一個誤差值e，變成y0 = w0 + w1x + e這個e會使得預測出的點與其他點的平均為0，且變異數與其他點相同</p>
+<h4 id="Multiple-Linear-Regression"><a href="#Multiple-Linear-Regression" class="headerlink" title="Multiple Linear Regression"></a>Multiple Linear Regression</h4><p>與Simple Linear Regression不同的是，Simple Linear Regression對應到的X只有一個，但Multiple Linear Regression有多個Ｘ。也可以理解成由多個Ｘ(自變量)來預測一個Ｙ</p>
+<h4 id="Polynomial-Regression"><a href="#Polynomial-Regression" class="headerlink" title="Polynomial Regression"></a>Polynomial Regression</h4><p>當我們的資料沒有明顯的直線關係，而是呈現未知的曲線關係的時候，我們可選擇使用polynomial regression來擬合兩者。這裡有一點值得我們注意，也就是在有限的資料集中我們永遠可以找到一個Regression來符合所有資料<br>但其實這不是我們要的，因為太過度的符合會導致模型失去預測能力，只善於回答現有資料。</p>
+<h5 id="What-happens-with-more-data"><a href="#What-happens-with-more-data" class="headerlink" title="What happens with more data?"></a>What happens with more data?</h5><p>資料變多得時候，可以解決overfitting的問題，因為資料夠多的時候他才知道哪些資料是他可以忽略的，哪些資料是他要記住的？<br><img src="/images/2018/02/05/more_data.PNG" alt=""></p>
+<h4 id="Regularization"><a href="#Regularization" class="headerlink" title="Regularization"></a>Regularization</h4><p>用來控制Overfitting，鼓勵我們的一些Weight在不必要的時候，就趨近於0。也就是說，如果我們要保留這個Weight我們就一定要有data來支持他是有意義的，否則就讓Weight等於0。<br>Weight等於0代表什麼？代表的是我們把資料放進去Model經過這層Weight的時候他不去做處理，放進去什麼值就傳出什麼值。</p>
+<h2 id="Clustering"><a href="#Clustering" class="headerlink" title="Clustering"></a>Clustering</h2><p>Clustering在做的事情，是把看起來相近的資料是為群組，並且給他們一個標籤來代表這群資料。<br>為什麼需要聚類？因為我們需要一個比較好的方式去有效地整理出一個具有代表性的類別，這些類別可以用來總結資料、計算、分割或是預測<br>如何作聚類？常見的有K-means、GNN、Mean-shift Clustering</p>
+<h3 id="K-means-clustering"><a href="#K-means-clustering" class="headerlink" title="K-means clustering"></a>K-means clustering</h3><p>附上一個 Python 的 k-means 實作：<a href="http://nbviewer.jupyter.org/github/flothesof/posts/blob/master/20150717_Kmeans.ipynb" target="_blank" rel="noopener">Kmeans</a><br>簡單來說，就是今天我決定要把資料分成 k 群，k-means會透過距離來計算區域的中心點，來將資料分類，如果現在的中心點位子，不在被分在同一類的資料中心點上的話，則移動到計算出的中心點，直到收斂（不移動）<br>要怎麼決定Ｋ？多增加Ｋ之後替我們帶來多少 Varience 的降低，來看要多少Ｋ</p>
+<h4 id="計算距離"><a href="#計算距離" class="headerlink" title="計算距離"></a>計算距離</h4><p>那我們要如何計算距離（相似度）？<br>一般使用的方法不外乎Euclideanp Distance（歐式距離）及Cosine similarity<br>Euclideanp Distance =<br>Cosine similarity =<br>至於要怎麼選用？一般我們在碰到資料時，如果對於資料的特性不了解，會先以歐式距離去看，但如果清楚知道特徵具有<font color="FF0000">方向性</font>的時候就會使用Cosine similarity</p>
+<h4 id="Pro-and-Con-for-k-means"><a href="#Pro-and-Con-for-k-means" class="headerlink" title="Pro and Con for k-means"></a>Pro and Con for k-means</h4><ul>
+<li>Pro</li>
+</ul>
+<ol>
+<li>快、簡單</li>
+</ol>
+<ul>
+<li>Con</li>
+</ul>
+<ol>
+<li>容易受到noise的影響：若有離群值，在聚類起來的時候cluster mean會落在奇怪的地方</li>
+<li>選擇Ｋ不容易</li>
+<li>在資料量大起來的時候計算複雜度（big O)會增加</li>
+</ol>
+<h3 id="GMM-Clustering-Gaussian-Mixture-Model"><a href="#GMM-Clustering-Gaussian-Mixture-Model" class="headerlink" title="GMM Clustering (Gaussian Mixture Model)"></a>GMM Clustering (Gaussian Mixture Model)</h3><p>GMM 和k-means 很像，不過GMM 是學習出一些概率密度函數來（所以GMM 除了用在clustering 上之外，還經常被用於density estimation ），簡單地說，k-means 的結果是每個數據點被assign 到其中某一個cluster 了，而GMM 則給出這些數據點被assign 到每個cluster 的概率，又稱作soft assignment。<br>參考文章：<a href="http://blog.pluskid.org/?p=39" target="_blank" rel="noopener">漫谈 Clustering (3): Gaussian Mixture Model</a></p>
+<ul>
+<li>Expectation Maximization 是一個重要的做法：<br>固定一個部分去改另一個部分，接下來又去固定另一個部分，回來改第一個部分<br>E-step: compute the expected label<br>M-step: update MLE ✓ with (now labeled) Xμ</li>
+</ul>
+<h3 id="Mean-shift-Clustering"><a href="#Mean-shift-Clustering" class="headerlink" title="Mean-shift Clustering"></a>Mean-shift Clustering</h3><p>會先選擇一個 kernel 想像成一個window走到哪個位子抓到了一些點，然後用範圍內的平均點作為下一個移動點，最後會收斂到一個點（密度最高）而這個點就local optimal<br>容易去產出大小不一的Segment，所以在computer vision中常會用到</p>
+<p><img src="images/2018/02/05/meanshif.PNG" alt=""></p>
+<h4 id="Pro-and-Con-for-Mean-shift"><a href="#Pro-and-Con-for-Mean-shift" class="headerlink" title="Pro and Con for Mean-shift"></a>Pro and Con for Mean-shift</h4><ul>
+<li>Pro</li>
+</ul>
+<ol>
+<li>對於cluster的數量以及形狀有彈性</li>
+<li>對outlier不敏感</li>
+</ol>
+<ul>
+<li>Con</li>
+</ul>
+<ol>
+<li>再高維度處理上不容易</li>
+<li>kernel size的決定</li>
+</ol>
+<h3 id="Hierarchical-Clustering"><a href="#Hierarchical-Clustering" class="headerlink" title="Hierarchical Clustering"></a>Hierarchical Clustering</h3><p>這部分我參考網路上的文章補齊，與老師講述的內容沒有太大出入<br>參考文章：<a href="http://mirlab.org/jang/books/dcpr/dcHierClustering.asp?title=3-2%20Hierarchical%20Clustering%20(%B6%A5%BCh%A6%A1%A4%C0%B8s%AAk)&language=chinese" target="_blank" rel="noopener">Hierarchical Clustering (階層式分群法)</a><br>階層式分群法（hierarchical clustering）透過一種階層架構的方式，將資料層層反覆地進行分裂或聚合，以產生最後的樹狀結構，通常有兩種做法分別是：Agglomerative clustering 與 Divisive clustering，我們用一張圖來看看兩種方式有什麼不同</p>
+<p><img src="images/2018/02/05/AvsD.jpg" alt=""></p>
+<p>比較常用的是 Agglomerative clustering ，是因為他在一開始平行化較容易，且資料量大的時候他的計算效率也比較高<br>Agglomerative clustering 由樹狀結構的底部開始層層聚合。一開始我們將每一筆資料視為一個群聚（cluster），假設我們現在擁有n筆資料，則將這n筆資料視為n個群聚，亦即每個群聚包含一筆資料：</p>
+<ol>
+<li>將每筆資料視為一個群聚 Ci, i=1 1 to n.</li>
+<li>找出所有群聚間，距離最接近的兩個群聚 Ci、Cj</li>
+<li>合併 Ci、 Cj 成為一個新的群聚</li>
+<li>假如目前的群聚數目多於我們預期的群聚數目，則反覆重複步驟二至四，直到群聚數目已將降到我們所要求的數目。</li>
+</ol>
+<p>在步驟二中，何謂「距離最接近的兩個群聚 Ci、Cj」呢？事實上在定義兩個群聚之間的距離，有各種不同的方式，每一種方式所得到的結果都不太相同。這些常用的群聚距離的定義可以說明如下。</p>
+<ol>
+<li>單一連結聚合演算法（single-linkage agglomerative algorithm）：群聚與群聚間的距離可以定義為不同群聚中最接近兩點間的距離</li>
+<li>完整連結聚合演算法（complete-linkage agglomerative algorithm）：群聚間的距離定義為不同群聚中最遠兩點間的距離</li>
+<li>平均連結聚合演算法（average-linkage agglomerative algorithm）：群聚間的距離則定義為不同群聚間各點與各點間距離總和的平均（其中， 表示 的資料個數。）</li>
+<li>沃德法（Ward’s method）：群聚間的距離定義為在將兩群合併後，各點到合併後的群中心的距離平方和（其中，m 表示 Ci∪Cj 的平均值）</li>
+</ol>
+<p><img src="images/2018/02/05/aggclu.png" alt=""></p>
+<h4 id="Pro-and-Con-for-Hierarchical-Clustering"><a href="#Pro-and-Con-for-Hierarchical-Clustering" class="headerlink" title="Pro and Con for Hierarchical Clustering"></a>Pro and Con for Hierarchical Clustering</h4><ul>
+<li>Pro</li>
+</ul>
+<ol>
+<li>概念簡單，可用樹狀結構來表現整個計算過程。</li>
+<li>只需要資料點兩兩之間的距離，就可以建構分群結果，而不需要資料點的實際座標。</li>
+</ol>
+<ul>
+<li>Con</li>
+</ul>
+<ol>
+<li>通常只適用於少量資料，很難處理大量資料。</li>
+</ol>
+<h3 id="DBSCAN-Clustering"><a href="#DBSCAN-Clustering" class="headerlink" title="DBSCAN Clustering"></a>DBSCAN Clustering</h3><p> 原文網址：<a href="https://ifun01.com/YRBZF7N.html" target="_blank" rel="noopener">從DBSCAN演算法談談聚類演算法 - Demon-初來駕到</a><br>DBSCAN演算法是對資料樣本進行劃分的聚類演算法，且我們事先並不知道資料樣本的標簽，是一種非監督的聚類演算法。</p>
+<h4 id="DBSCAN-定義"><a href="#DBSCAN-定義" class="headerlink" title="DBSCAN 定義"></a>DBSCAN 定義</h4><p>先來看看DBSCAN一些關鍵概念的定義︰</p>
+<ol>
+<li>e 鄰域︰給定物件半徑 e 內的區域稱為該物件的 ?e鄰域</li>
+<li>核心物件（core points）︰如果給定物件 e 鄰域內的樣本點數大于等於MinPts，則稱該物件為核心物件</li>
+<li>直接密度可達（directly density-reachable）︰給定一個物件集合D，如果p在q的 e 的鄰域內，且q是一個核心物件，則我們說物件p從物件q出發是直接密度可達的</li>
+<li>密度可達（density-reachable）︰對于樣本集合D，如果存在一個物件鏈 P1,P2,…,Pn,P1=q,Pn=p ，對于 Pi　D,1≦i≦n ， Pi+1 是從 Pi 關于 ? 和MinPts直接密度可達，則物件p是從物件q關于 ? 和MinPts密度可達的</li>
+<li>密度相連（density-connected）︰如果存在物件 o(屬於)D ，使物件p和q都是從o關于 e 和MinPts密度可達的，那麼物件p到q是關于 e 和MinPts密度相連的</li>
+</ol>
+<p>不好懂對吧？所以我們來看作者另外給的例子：<br><img src="images/2018/02/05/DBSCAN.jpg" alt=""><br>根據上圖，分別來解釋這五條定義:</p>
+<ol>
+<li>以某個資料樣本點作為圓心，以 e 為半徑畫圓，每個圓所圈的區域就是 e 鄰域。直觀上來說，有多少個資料樣本點，就有多少個鄰域</li>
+<li>核心物件的概念還需要強化一下，數學形式的定義如下︰ N?(p)={q(屬於)D|dist(p,q)≦e} ，且 p(屬於)N?(p),|N?(p)|≧MinPts ，滿足上述兩個條件的p為核心物件。從同圖中來說，假設MinPts是3，紅色的點都屬于核心物件</li>
+<li>如A點所畫出的圈圈內的其他任何紅色點都屬于直接密度可達</li>
+<li>密度可達的關系相對弱一點，除A點鄰域內的其他紅色點與A的關系均屬于密度可達</li>
+<li>個人覺得密度相連與密度可達是一個概念，只是說考慮的角度不同，從A出發，能夠密度可達的任意兩個點都屬于密度相連</li>
+</ol>
+<h4 id="演算法（DBSCAN）"><a href="#演算法（DBSCAN）" class="headerlink" title="演算法（DBSCAN）:"></a>演算法（DBSCAN）:</h4><p>輸入︰半徑 e ，給定點在 e 鄰域內成為核心物件的最小鄰域點數MinPts，資料集D<br>輸出︰目標類簇集合<br>Repeat:</p>
+<ol>
+<li>判斷輸入點是否為核心物件</li>
+<li>找出核心物件的 e 鄰域中的所有直接密度可達點 Until 所有輸入點都判斷完畢<br>Repeat: 針對所有核心物件的 e 鄰域內所有直接密度可達點找到最大密度相連物件集合，中間涉及到一些密度可達物件的合並 Until 所有核心物件的 ? 鄰域都遍歷完畢</li>
+</ol>
+<h4 id="Pro-and-Con-for-DBSCAN"><a href="#Pro-and-Con-for-DBSCAN" class="headerlink" title="Pro and Con for DBSCAN"></a>Pro and Con for DBSCAN</h4><ul>
+<li>Pro</li>
+</ul>
+<ol>
+<li>對順序是比較不敏感的，不管從哪裡開始最後都會收斂到同一個結果上。如果是k-means或GNN有可能因為起始點的選擇不同，或探索的順序不同使得最後分群的結果不同。</li>
+</ol>
+<ul>
+<li>Con</li>
+</ul>
+<ol>
+<li>比較難的地方是 MinPts 與 e 的大小要怎麼定義</li>
+</ol>
+<h3 id="Spectral-Clustering（待補）"><a href="#Spectral-Clustering（待補）" class="headerlink" title="Spectral Clustering（待補）"></a>Spectral Clustering（待補）</h3><p>參考文章：<a href="http://blog.pluskid.org/?p=287" target="_blank" rel="noopener">漫谈 Clustering (4): Spectral Clustering</a><br>Spectral Clustering可以解決一些Grapth的問題：如果點根點之間沒有所謂的距離定義，只有一些相似度的資料，就可以把圖給定義出來，在用這個方法就可以把群分出來<br>Visual Page Rank：在看圖片的相似度問題的時候 Normalized Cut 是可以處理得很好的</p>
+<h3 id="Which-Clustering-Algorithm-to-use"><a href="#Which-Clustering-Algorithm-to-use" class="headerlink" title="Which Clustering Algorithm to use?"></a>Which Clustering Algorithm to use?</h3><ul>
+<li>Quantization / Summarization : K-means</li>
+<li>Image segmentation : agglomerative clustering</li>
+<li>Determining relevance, summarization, segmentation : Spectral clustering</li>
+</ul>
+<h2 id="Meta-Learning"><a href="#Meta-Learning" class="headerlink" title="Meta Learning"></a>Meta Learning</h2><p>老師上課有提到，大概查了一下做點補充<br>參考文章：<a href="https://zhuanlan.zhihu.com/p/28639662" target="_blank" rel="noopener">最前沿：百家争鸣的Meta Learning/Learning to learn</a><br>（待補）</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/機器學習/" rel="tag"># 機器學習</a>
+          
+            <a href="/tags/人工智慧學校/" rel="tag"># 人工智慧學校</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/05/機器學習基礎與演算法筆記1/" rel="next" title="機器學習基礎與演算法筆記1">
+                <i class="fa fa-chevron-left"></i> 機器學習基礎與演算法筆記1
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/06/機器學習基礎與演算法筆記3/" rel="prev" title="機器學習基礎與演算法筆記3">
+                機器學習基礎與演算法筆記3 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Yoga Chen" />
+            
+              <p class="site-author-name" itemprop="name">Yoga Chen</p>
+              <p class="site-description motion-element" itemprop="description">Divide and Conquer.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yoga0115" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/820115Yoga" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.linkedin.com/in/%E7%A5%90%E5%98%89-%E9%99%B3-862620155/" target="_blank" title="linkedin">
+                      
+                        <i class="fa fa-fw fa-globe"></i>linkedin</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/yoga820115" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Facebook</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yoga820115@gmail.com" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Google</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dimension-Reduction"><span class="nav-number">1.</span> <span class="nav-text">Dimension Reduction</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#主成份分析-PCA"><span class="nav-number">1.0.1.</span> <span class="nav-text">主成份分析(PCA)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#線性判別分析-LDA"><span class="nav-number">1.0.2.</span> <span class="nav-text">線性判別分析(LDA)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PCA-and-LDA"><span class="nav-number">1.0.3.</span> <span class="nav-text">PCA and LDA</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#等度量映射-Isomap"><span class="nav-number">1.0.4.</span> <span class="nav-text">等度量映射(Isomap)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Regression"><span class="nav-number">2.</span> <span class="nav-text">Regression</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Simple-Linear-Regression"><span class="nav-number">2.0.1.</span> <span class="nav-text">Simple Linear Regression</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Multiple-Linear-Regression"><span class="nav-number">2.0.2.</span> <span class="nav-text">Multiple Linear Regression</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Polynomial-Regression"><span class="nav-number">2.0.3.</span> <span class="nav-text">Polynomial Regression</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#What-happens-with-more-data"><span class="nav-number">2.0.3.1.</span> <span class="nav-text">What happens with more data?</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Regularization"><span class="nav-number">2.0.4.</span> <span class="nav-text">Regularization</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Clustering"><span class="nav-number">3.</span> <span class="nav-text">Clustering</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#K-means-clustering"><span class="nav-number">3.1.</span> <span class="nav-text">K-means clustering</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#計算距離"><span class="nav-number">3.1.1.</span> <span class="nav-text">計算距離</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pro-and-Con-for-k-means"><span class="nav-number">3.1.2.</span> <span class="nav-text">Pro and Con for k-means</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GMM-Clustering-Gaussian-Mixture-Model"><span class="nav-number">3.2.</span> <span class="nav-text">GMM Clustering (Gaussian Mixture Model)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mean-shift-Clustering"><span class="nav-number">3.3.</span> <span class="nav-text">Mean-shift Clustering</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Pro-and-Con-for-Mean-shift"><span class="nav-number">3.3.1.</span> <span class="nav-text">Pro and Con for Mean-shift</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hierarchical-Clustering"><span class="nav-number">3.4.</span> <span class="nav-text">Hierarchical Clustering</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Pro-and-Con-for-Hierarchical-Clustering"><span class="nav-number">3.4.1.</span> <span class="nav-text">Pro and Con for Hierarchical Clustering</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DBSCAN-Clustering"><span class="nav-number">3.5.</span> <span class="nav-text">DBSCAN Clustering</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DBSCAN-定義"><span class="nav-number">3.5.1.</span> <span class="nav-text">DBSCAN 定義</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#演算法（DBSCAN）"><span class="nav-number">3.5.2.</span> <span class="nav-text">演算法（DBSCAN）:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pro-and-Con-for-DBSCAN"><span class="nav-number">3.5.3.</span> <span class="nav-text">Pro and Con for DBSCAN</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spectral-Clustering（待補）"><span class="nav-number">3.6.</span> <span class="nav-text">Spectral Clustering（待補）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Which-Clustering-Algorithm-to-use"><span class="nav-number">3.7.</span> <span class="nav-text">Which Clustering Algorithm to use?</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Meta-Learning"><span class="nav-number">4.</span> <span class="nav-text">Meta Learning</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yoga Chen</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 強力驅動</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主題 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

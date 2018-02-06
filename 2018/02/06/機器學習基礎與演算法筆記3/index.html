@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-tw">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="機器學習,人工智慧學校," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="陳彥呈博士＠人工智慧學校第三部分的主題：Classification">
+<meta name="keywords" content="機器學習,人工智慧學校">
+<meta property="og:type" content="article">
+<meta property="og:title" content="機器學習基礎與演算法筆記3">
+<meta property="og:url" content="http://yoursite.com/2018/02/06/機器學習基礎與演算法筆記3/index.html">
+<meta property="og:site_name" content="暖陽春草">
+<meta property="og:description" content="陳彥呈博士＠人工智慧學校第三部分的主題：Classification">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/06/Super.PNG">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/06/logit.PNG">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/06/sigmod.PNG">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/06/LR.PNG">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/06/NVL.PNG">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/06/Perceptron1.jpg">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/06/Perceptron2.jpg">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/06/thrash.PNG">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/06/separating.PNG">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/06/Overtraing.PNG">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/06/SPable.PNG">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/06/KNN1.jpg">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/06/KNN2.jpg">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/06/nsvm1.PNG">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/06/nsvm2.PNG">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/06/nsvm3.PNG">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/06/nsvm4.PNG">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/06/bagtree.PNG">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/06/Ada.PNG">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/06/semi.PNG">
+<meta property="og:updated_time" content="2018-02-06T16:46:47.687Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="機器學習基礎與演算法筆記3">
+<meta name="twitter:description" content="陳彥呈博士＠人工智慧學校第三部分的主題：Classification">
+<meta name="twitter:image" content="http://yoursite.com/images/2018/02/06/Super.PNG">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/06/機器學習基礎與演算法筆記3/"/>
+
+
+
+
+
+  <title>機器學習基礎與演算法筆記3 | 暖陽春草</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">暖陽春草</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Divide and Conquer.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/06/機器學習基礎與演算法筆記3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yoga Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="暖陽春草">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">機器學習基礎與演算法筆記3</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-02-06T09:22:40+08:00">
+                2018-02-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/學習筆記/" itemprop="url" rel="index">
+                    <span itemprop="name">學習筆記</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>陳彥呈博士＠人工智慧學校<br>第三部分的主題：Classification<br><a id="more"></a><br>課程影片：<br><a href="https://youtu.be/jsb2FLNMt_Y" target="_blank" rel="noopener">2018/02/06人工智慧學校-機器學習基礎與演算法part1( Clustering + Classifier )</a><br><a href="https://youtu.be/wgjVSC-qEqc" target="_blank" rel="noopener">2018/02/06人工智慧學校-機器學習基礎與演算法part2( Classifier )</a><br><a href="https://youtu.be/8zrsefZzNtQ" target="_blank" rel="noopener">2018/02/06人工智慧學校-機器學習基礎與演算法part3-1( Classifier )</a><br><a href="https://youtu.be/UvMv8gY8B2g" target="_blank" rel="noopener">2018/02/06人工智慧學校-機器學習基礎與演算法part3-2( Classifier )</a><br><a href="https://youtu.be/2yMhnZjjRp4" target="_blank" rel="noopener">2018/02/06人工智慧學校-機器學習基礎與演算法part4( Classifier )</a></p>
+<h2 id="Classification"><a href="#Classification" class="headerlink" title="Classification"></a>Classification</h2><h3 id="Supervised-Learning"><a href="#Supervised-Learning" class="headerlink" title="Supervised Learning"></a>Supervised Learning</h3><p>要做的是學習一個 function 要最小化預測的誤差，這個 function 會分割出決策區域（decision regions），這些區域會以決策邊界（decision boundaries）為分割，但如果有rejection area的話有可能會沒有決策邊界<br><img src="/images/2018/02/06/Super.PNG" alt=""></p>
+<h3 id="Linear-Classifiers"><a href="#Linear-Classifiers" class="headerlink" title="Linear Classifiers"></a>Linear Classifiers</h3><p>最後學出的Boundaries是線性的，介紹的方法有以下幾種：</p>
+<ol>
+<li>Naïve Bayes Classifiers</li>
+<li>Logistic Regression</li>
+<li>Perceptron</li>
+</ol>
+<h4 id="Naïve-Bayes-Classifiers"><a href="#Naïve-Bayes-Classifiers" class="headerlink" title="Naïve Bayes Classifiers"></a>Naïve Bayes Classifiers</h4><p>他有一個天真的假設：特徵彼此間是互相獨立的。<br>但這個假設在後來並沒有太大的問題，因為即便資料是有一些關聯性的，再降維的過程可能也被消滅了，不過還是要注意不是每種情況都是如此就是了。<br>詳細的介紹我也是參考別人的文章：<a href="http://fcamel-fc.blogspot.tw/2009/02/naive-bayes-classifier.html" target="_blank" rel="noopener">Naive Bayes Classifier 的原理（單刀直入版）</a><br>首先用一個問題帶入，假設我們今天碰到的問題是：<br>給定由屬性 A1, A2, A3 和類別 C1, C2 組成的 training data（例如 (A1, A2, C1) 或 (A1, A3, C2)）。求 A1, A2, A3 三者任意組合的情況下，應該分類到 C1 還是 C2。</p>
+<h5 id="Naïve-Bayes-Classifiers-的定義"><a href="#Naïve-Bayes-Classifiers-的定義" class="headerlink" title="Naïve Bayes Classifiers 的定義"></a>Naïve Bayes Classifiers 的定義</h5><p>以 (A1, A2) 為例說明：<br>P(C1 | A1, A2) = P(A1, A2 | C1) * P(C1) / P(A1, A2)<br>比較 P(C1 | A1, A2) 和 P(C2 | A1, A2) ，若前者較高，就將 (A1, A2) 分類到 C1，反之分到 C2。<br>注意 P(C1 | A1, A2) 和 P(C2 | A1, A2) 分母一樣，可以忽略不算。</p>
+<h5 id="Naive-Bayes-Classifier-原理說明："><a href="#Naive-Bayes-Classifier-原理說明：" class="headerlink" title="Naive Bayes Classifier 原理說明："></a>Naive Bayes Classifier 原理說明：</h5><p>相較於直接數 training data 裡各種組合和對應到類別的數量，Naive Bayes Classifier 的優勢是<font color="FF0000">在 training data 不足時，仍能處理各種屬性組合</font>。也就是說，即使 training data 內沒有出現過 (A1, A2, C1) 和 (A1, A2, C2)，Naive Bayes Classifier 仍可估計出 P(C1 | A1, A2) 和 P(C2 | A1, A2) 何者機率較高。<br>原因是 Naive Bayes Classifier 假設所有屬性對其類別具有 <font color="FF0000">conditional independence</font> (也就是上面提到的天真的假設) ，所以 P(C1 | A1, A2) 可拆成如下的算法：<br>P(A1, A2 | C1) = P(A1 | C1) * P(A2 | C1)<br>同理可算出 P(A1, A2 | C2) ，所以能比較 P(C1 | A1, A2) 和 P(C2 | A1, A2) 的值。</p>
+<h4 id="Logistic-Regression"><a href="#Logistic-Regression" class="headerlink" title="Logistic Regression"></a>Logistic Regression</h4><p>再處理0~1之間的分類問題時使用Logistic Regression<br>這裡借用了一些以前學校老師的講義的內容：<a href="https://sites.google.com/view/mikehsiao/teaching/data-science-for-fintech-application" target="_blank" rel="noopener">Data Science for FinTech Application</a></p>
+<h5 id="Odds-Ratio-勝算比、比值比、優勢比"><a href="#Odds-Ratio-勝算比、比值比、優勢比" class="headerlink" title="Odds Ratio (勝算比、比值比、優勢比)"></a>Odds Ratio (勝算比、比值比、優勢比)</h5><p>正事件 (positive event) 並不是表示好的方面的事件，而是代表我們想要預測的事件。在某些二元分類的問題上,我們常常希望得到的是一個機率值，P(Y=1|X=x),這類的問題不適合直接取得 y 或預測 y。<br>Odds Ratio 是指 p/(1-p) 這個比值,p 為正事件的機率，而 Odds Ratio 的對數函數稱為 logit（終於知道為什麼要講這段）<br>Logit 的 x 值域為 [0.0, 1.0]，Logit 的值域為一實數，另外Logit 的反函數為 sigmod，也可以稱作 <font color="FF0000">Logistic Function</font>。<br><img src="/images/2018/02/06/logit.PNG" alt=""><br><img src="/images/2018/02/06/sigmod.PNG" alt=""><br>在實際應用時,我們更希望直接求解 P(y=1|X=x) 的值，於是我們進入到了邏輯回歸的模型的假設：<br>就如同線性回歸模型假設有一條 y = ax + b<br><img src="/images/2018/02/06/LR.PNG" alt=""><br>簡單來說，邏輯回歸中試圖找一條只有 0/1 兩種可能的線去描述資料。<br>對於相關的演算法及實作可以參考：<a href="https://ithelp.ithome.com.tw/articles/10187739" target="_blank" rel="noopener">機器學習演算法 - 線性回歸與邏輯回歸</a></p>
+<h4 id="Naïve-Bayes-vs-Logistic-Regression"><a href="#Naïve-Bayes-vs-Logistic-Regression" class="headerlink" title="Naïve Bayes vs Logistic Regression"></a>Naïve Bayes vs Logistic Regression</h4><p><img src="/images/2018/02/06/NVL.PNG" alt=""><br>UCI Machine Learning dataset &lt;- 建議可以拿這邊的資料做簡單測試及驗證</p>
+<h4 id="Perceptron"><a href="#Perceptron" class="headerlink" title="Perceptron"></a>Perceptron</h4><p>與前面兩個方法的做法不太一樣，但做出來的結果是相似的，但他得出的結果是相對不穩定的，所以比較沒有在用<br>作法：<br><img src="/images/2018/02/06/Perceptron1.jpg" alt=""><br>一開始會把所有的Weight都設成0，Ｗeight會對應到藍色面，當一個新的Ｘ（白色向量）進來的時候看分類結果是不是對的，如果是對的就不變動，如果是錯的他就會加上一個向量（綠色向量）來生成新的Boundary（綠色面）<br>多個Weight的做法也類似，以下附個圖：<br><img src="/images/2018/02/06/Perceptron2.jpg" alt=""><br>Perceptron可能會遇到的問題：</p>
+<ol>
+<li>if the data isn’t separable, weights might thrash，但可以取thrash的平均來解決<br><img src="/images/2018/02/06/thrash.PNG" alt=""></li>
+<li>Mediocre generalization: finds a barely separating solution，他可以有更好的解但他沒有選到<br><img src="/images/2018/02/06/separating.PNG" alt=""></li>
+<li>容易有Overtraing的問題<br><img src="/images/2018/02/06/Overtraing.PNG" alt=""></li>
+</ol>
+<h3 id="Noninear-Classifiers"><a href="#Noninear-Classifiers" class="headerlink" title="Noninear Classifiers"></a>Noninear Classifiers</h3><p>為什麼需要 Noninear Classifiers？是因為有些資料沒有辦法被 Linear 的方法分割<br>什麼樣的資料呢？我們來看看下面的圖<br><img src="/images/2018/02/06/SPable.PNG" alt=""><br>在這個部分介紹的有以下方法：</p>
+<ol>
+<li>Nearest Neighbor Classifier</li>
+<li>Nonlinear SVMs</li>
+<li>Decision Tree Classifier</li>
+</ol>
+<h4 id="Nearest-Neighbor-Classifier"><a href="#Nearest-Neighbor-Classifier" class="headerlink" title="Nearest Neighbor Classifier"></a>Nearest Neighbor Classifier</h4><p>也就是所謂的KNN，以下這篇的講解較易於理解，於是借用了一下：<a href="http://enginebai.logdown.com/posts/241676/knn" target="_blank" rel="noopener">[Machine Learning] kNN分類演算法</a><br>kNN分類演算法簡單來說就是要找和新數據最近的K個鄰居，這些鄰居是什麼分類，那麼新數據就是什麼樣的分類。<br><img src="/images/2018/02/06/KNN1.jpg" alt=""><br>現在給定一個特徵樣本 (我們稱為訓練集合)，我們輸入一個新樣本要把一個該樣本分藍色、紅色，我們可以從訓練集合找跟這新樣本距離最近的K個特徵樣本，看這些K個點是什麼顏色，來決定該點的最終顏色。<br><img src="/images/2018/02/06/KNN2.jpg" alt=""><br>原本藍色、紅色的點為特徵樣本 (訓練集合)，問號點為新樣本，我們設定K=5，即要找跟新樣本距離最近的K=5個特徵點，藍色一個、紅色四個，所以我們可以決定新樣本會是紅色。</p>
+<h4 id="Nonlinear-SVMs"><a href="#Nonlinear-SVMs" class="headerlink" title="Nonlinear SVMs"></a>Nonlinear SVMs</h4><p>這裡也參考了以前老師的講義：<a href="https://github.com/hsiaom26/DSFTA/blob/master/Alg-SVM.ipynb" target="_blank" rel="noopener">SVM (Support Vector Machine)</a></p>
+<h5 id="先來說說什麼是SVM-Support-Vector-Machine"><a href="#先來說說什麼是SVM-Support-Vector-Machine" class="headerlink" title="先來說說什麼是SVM(Support Vector Machine)"></a>先來說說什麼是SVM(Support Vector Machine)</h5><p>簡單來說，SVM 想要解決以下的問題：找出一個超平面(hyperplane)，使之將兩個不同的集合分開。因為資料可能是高維度的資料，超平面意指在高維中的平面。</p>
+<h5 id="至於為什麼要Nonlinear-SVMs呢？"><a href="#至於為什麼要Nonlinear-SVMs呢？" class="headerlink" title="至於為什麼要Nonlinear SVMs呢？"></a>至於為什麼要Nonlinear SVMs呢？</h5><p>我們的資料本來是線性的，那麼我們可以去很輕易的切分<br><img src="/images/2018/02/06/nsvm1.PNG" alt=""><br>但如果資料分不開呢？<br><img src="/images/2018/02/06/nsvm2.PNG" alt=""><br>我們可以把它投影到一個高維的空間，來看在這個新的空間中是不是能夠分得開<br><img src="/images/2018/02/06/nsvm3.PNG" alt=""><br><img src="/images/2018/02/06/nsvm4.PNG" alt=""></p>
+<h5 id="在有Multi-class的時候…"><a href="#在有Multi-class的時候…" class="headerlink" title="在有Multi-class的時候…"></a>在有Multi-class的時候…</h5><p>Multi-class 的 SVM大概有兩種方式可以做：<br>其中一個Ｙ與其他的Ｙ訓練出一個Linear的SVM<br>另一個方法是兩兩（個Ｙ）訓練出一個Linear的SVM</p>
+<h5 id="Pro-and-Con-for-SVM"><a href="#Pro-and-Con-for-SVM" class="headerlink" title="Pro and Con for SVM"></a>Pro and Con for SVM</h5><ul>
+<li>Pro</li>
+</ul>
+<ol>
+<li>即便是在資料少的情況，SVMs的做法其實效果都是不錯的</li>
+<li>在高維度的空間中仍然有效</li>
+<li>就算今天資料的維度多餘資料本身，SVM仍然是有效的</li>
+</ol>
+<ul>
+<li>Con</li>
+</ul>
+<ol>
+<li>在做 Multi-class 的時候比較麻煩</li>
+<li>Data 量大的時候計算的時間是比較久的，因為他要針對每組的example都去做一個相似度，做出一個 Matrix</li>
+<li>如果資料的特徵值筆資料數量多的時候，效果會比較差</li>
+<li>SVMs do not directly provide probability estimates, these are calculated using an expensive five-fold cross-validation.</li>
+</ol>
+<h4 id="Decision-Tree-Classifier"><a href="#Decision-Tree-Classifier" class="headerlink" title="Decision Tree Classifier"></a>Decision Tree Classifier</h4><p>目的在找出一個分錯的誤差<font color="FF0000">最小的</font>結果<br>最能有效分開（information gain最小）<br>Ensembles ：一群classifiers的組合</p>
+<p>Bootstrap Aggregating (Bagging)<br>利用有限的ＤＡＴＡ幫助自己學出一個更好的ＣＬＡＳＳＩＦＩＥＲ<br>每一個Si訓練出一個弱的ＣＬＡＳＳＩ<br>隨機取樣Ｓ，取出放回，所以有可能會在娶到一樣的ＳＡＭＰＬＥ，最後大概會有63%取道unique的example</p>
+<p>學習演算法的穩定度<br>對於ＢＡＧＧＩＮＧ來說<br>穩定沒有太大幫助（ＳＶＭ）<br>不穩定的好處與壞處（ＤＴＲＥＥ）<br>會讓每一個學出來的ＴＲＥＥ會有一定程度上的差異，這些差異會有辦法幫助最後的結論</p>
+<p>這麼講還是不知道在幹嘛？我們來看看圖<br>如果我們今天用一個tree來訓練，結果可能很醜<br>但如果我們做了100次？<br><img src="/images/2018/02/06/bagtree.PNG" alt=""></p>
+<p>Boosting<br>在bagging的時候每個分類氣都是獨立的，<br>但boosting會依次訓練，如果前面的分類氣表現不好的時候，下一個訓練就會用更好的方式去訓練，所以他頓於一些困難的資料給予的權重是比較高的<br>所謂困難的資料就是比較難分的資料</p>
+<p>Adaboost<br>訓練曾數的增加會使他的error成指數下降的<br><img src="/images/2018/02/06/Ada.PNG" alt=""></p>
+<h4 id="Rendom-Forest-補"><a href="#Rendom-Forest-補" class="headerlink" title="Rendom Forest(補)"></a>Rendom Forest(補)</h4><p>老師沒有特別說，只是帶過而已，所以自己補了一把(?)<br>資料進來後再split的方式與前面提到的不同，但對於準確度是有幫助的。</p>
+<h3 id="Semi-supervised-Learning"><a href="#Semi-supervised-Learning" class="headerlink" title="Semi-supervised Learning"></a>Semi-supervised Learning</h3><p> 未被標記的資料能幫的上忙嗎？<br> 其實加上這些constrain是有幫助的，解決了一般的margan的問題<br><img src="/images/2018/02/06/semi.PNG" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/機器學習/" rel="tag"># 機器學習</a>
+          
+            <a href="/tags/人工智慧學校/" rel="tag"># 人工智慧學校</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/05/機器學習基礎與演算法筆記2/" rel="next" title="機器學習基礎與演算法筆記2">
+                <i class="fa fa-chevron-left"></i> 機器學習基礎與演算法筆記2
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/06/機率、統計與R語言筆記1/" rel="prev" title="機率、統計與Ｒ語言筆記1">
+                機率、統計與Ｒ語言筆記1 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Yoga Chen" />
+            
+              <p class="site-author-name" itemprop="name">Yoga Chen</p>
+              <p class="site-description motion-element" itemprop="description">Divide and Conquer.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yoga0115" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/820115Yoga" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.linkedin.com/in/%E7%A5%90%E5%98%89-%E9%99%B3-862620155/" target="_blank" title="linkedin">
+                      
+                        <i class="fa fa-fw fa-globe"></i>linkedin</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/yoga820115" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Facebook</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yoga820115@gmail.com" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Google</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Classification"><span class="nav-number">1.</span> <span class="nav-text">Classification</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Supervised-Learning"><span class="nav-number">1.1.</span> <span class="nav-text">Supervised Learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linear-Classifiers"><span class="nav-number">1.2.</span> <span class="nav-text">Linear Classifiers</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Naïve-Bayes-Classifiers"><span class="nav-number">1.2.1.</span> <span class="nav-text">Naïve Bayes Classifiers</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Naïve-Bayes-Classifiers-的定義"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Naïve Bayes Classifiers 的定義</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Naive-Bayes-Classifier-原理說明："><span class="nav-number">1.2.1.2.</span> <span class="nav-text">Naive Bayes Classifier 原理說明：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Logistic-Regression"><span class="nav-number">1.2.2.</span> <span class="nav-text">Logistic Regression</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Odds-Ratio-勝算比、比值比、優勢比"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">Odds Ratio (勝算比、比值比、優勢比)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Naïve-Bayes-vs-Logistic-Regression"><span class="nav-number">1.2.3.</span> <span class="nav-text">Naïve Bayes vs Logistic Regression</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Perceptron"><span class="nav-number">1.2.4.</span> <span class="nav-text">Perceptron</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Noninear-Classifiers"><span class="nav-number">1.3.</span> <span class="nav-text">Noninear Classifiers</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Nearest-Neighbor-Classifier"><span class="nav-number">1.3.1.</span> <span class="nav-text">Nearest Neighbor Classifier</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Nonlinear-SVMs"><span class="nav-number">1.3.2.</span> <span class="nav-text">Nonlinear SVMs</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#先來說說什麼是SVM-Support-Vector-Machine"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">先來說說什麼是SVM(Support Vector Machine)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#至於為什麼要Nonlinear-SVMs呢？"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">至於為什麼要Nonlinear SVMs呢？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在有Multi-class的時候…"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">在有Multi-class的時候…</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Pro-and-Con-for-SVM"><span class="nav-number">1.3.2.4.</span> <span class="nav-text">Pro and Con for SVM</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Decision-Tree-Classifier"><span class="nav-number">1.3.3.</span> <span class="nav-text">Decision Tree Classifier</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Rendom-Forest-補"><span class="nav-number">1.3.4.</span> <span class="nav-text">Rendom Forest(補)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Semi-supervised-Learning"><span class="nav-number">1.4.</span> <span class="nav-text">Semi-supervised Learning</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yoga Chen</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 強力驅動</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主題 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
