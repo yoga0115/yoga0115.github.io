@@ -92,11 +92,11 @@
 <meta property="og:image" content="http://yoursite.com/images/2018/02/05/PL2.PNG">
 <meta property="og:image" content="http://yoursite.com/images/2018/02/05/ISO.PNG">
 <meta property="og:image" content="http://yoursite.com/images/2018/02/05/more_data.PNG">
-<meta property="og:image" content="http://yoursite.com/2018/02/05/機器學習基礎與演算法筆記2/images/2018/02/05/meanshif.PNG">
-<meta property="og:image" content="http://yoursite.com/2018/02/05/機器學習基礎與演算法筆記2/images/2018/02/05/AvsD.jpg">
-<meta property="og:image" content="http://yoursite.com/2018/02/05/機器學習基礎與演算法筆記2/images/2018/02/05/aggclu.png">
-<meta property="og:image" content="http://yoursite.com/2018/02/05/機器學習基礎與演算法筆記2/images/2018/02/05/DBSCAN.jpg">
-<meta property="og:updated_time" content="2018-02-06T16:43:57.606Z">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/05/meanshif.PNG">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/05/AvsD.jpg">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/05/aggclu.png">
+<meta property="og:image" content="http://yoursite.com/images/2018/02/05/DBSCAN.jpg">
+<meta property="og:updated_time" content="2018-02-07T15:09:46.215Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="機器學習基礎與演算法筆記2">
 <meta name="twitter:description" content="陳彥呈博士＠人工智慧學校第二部分的主題：回歸 &amp;amp; 維度縮減 &amp;amp; Clustering">
@@ -410,7 +410,7 @@
 <li>Expectation Maximization 是一個重要的做法：<br>固定一個部分去改另一個部分，接下來又去固定另一個部分，回來改第一個部分<br>E-step: compute the expected label<br>M-step: update MLE ✓ with (now labeled) Xμ</li>
 </ul>
 <h3 id="Mean-shift-Clustering"><a href="#Mean-shift-Clustering" class="headerlink" title="Mean-shift Clustering"></a>Mean-shift Clustering</h3><p>會先選擇一個 kernel 想像成一個window走到哪個位子抓到了一些點，然後用範圍內的平均點作為下一個移動點，最後會收斂到一個點（密度最高）而這個點就local optimal<br>容易去產出大小不一的Segment，所以在computer vision中常會用到</p>
-<p><img src="images/2018/02/05/meanshif.PNG" alt=""></p>
+<p><img src="/images/2018/02/05/meanshif.PNG" alt=""></p>
 <h4 id="Pro-and-Con-for-Mean-shift"><a href="#Pro-and-Con-for-Mean-shift" class="headerlink" title="Pro and Con for Mean-shift"></a>Pro and Con for Mean-shift</h4><ul>
 <li>Pro</li>
 </ul>
@@ -426,7 +426,7 @@
 <li>kernel size的決定</li>
 </ol>
 <h3 id="Hierarchical-Clustering"><a href="#Hierarchical-Clustering" class="headerlink" title="Hierarchical Clustering"></a>Hierarchical Clustering</h3><p>這部分我參考網路上的文章補齊，與老師講述的內容沒有太大出入<br>參考文章：<a href="http://mirlab.org/jang/books/dcpr/dcHierClustering.asp?title=3-2%20Hierarchical%20Clustering%20(%B6%A5%BCh%A6%A1%A4%C0%B8s%AAk)&language=chinese" target="_blank" rel="noopener">Hierarchical Clustering (階層式分群法)</a><br>階層式分群法（hierarchical clustering）透過一種階層架構的方式，將資料層層反覆地進行分裂或聚合，以產生最後的樹狀結構，通常有兩種做法分別是：Agglomerative clustering 與 Divisive clustering，我們用一張圖來看看兩種方式有什麼不同</p>
-<p><img src="images/2018/02/05/AvsD.jpg" alt=""></p>
+<p><img src="/images/2018/02/05/AvsD.jpg" alt=""></p>
 <p>比較常用的是 Agglomerative clustering ，是因為他在一開始平行化較容易，且資料量大的時候他的計算效率也比較高<br>Agglomerative clustering 由樹狀結構的底部開始層層聚合。一開始我們將每一筆資料視為一個群聚（cluster），假設我們現在擁有n筆資料，則將這n筆資料視為n個群聚，亦即每個群聚包含一筆資料：</p>
 <ol>
 <li>將每筆資料視為一個群聚 Ci, i=1 1 to n.</li>
@@ -441,7 +441,7 @@
 <li>平均連結聚合演算法（average-linkage agglomerative algorithm）：群聚間的距離則定義為不同群聚間各點與各點間距離總和的平均（其中， 表示 的資料個數。）</li>
 <li>沃德法（Ward’s method）：群聚間的距離定義為在將兩群合併後，各點到合併後的群中心的距離平方和（其中，m 表示 Ci∪Cj 的平均值）</li>
 </ol>
-<p><img src="images/2018/02/05/aggclu.png" alt=""></p>
+<p><img src="/images/2018/02/05/aggclu.png" alt=""></p>
 <h4 id="Pro-and-Con-for-Hierarchical-Clustering"><a href="#Pro-and-Con-for-Hierarchical-Clustering" class="headerlink" title="Pro and Con for Hierarchical Clustering"></a>Pro and Con for Hierarchical Clustering</h4><ul>
 <li>Pro</li>
 </ul>
@@ -464,7 +464,7 @@
 <li>密度可達（density-reachable）︰對于樣本集合D，如果存在一個物件鏈 P1,P2,…,Pn,P1=q,Pn=p ，對于 Pi　D,1≦i≦n ， Pi+1 是從 Pi 關于 ? 和MinPts直接密度可達，則物件p是從物件q關于 ? 和MinPts密度可達的</li>
 <li>密度相連（density-connected）︰如果存在物件 o(屬於)D ，使物件p和q都是從o關于 e 和MinPts密度可達的，那麼物件p到q是關于 e 和MinPts密度相連的</li>
 </ol>
-<p>不好懂對吧？所以我們來看作者另外給的例子：<br><img src="images/2018/02/05/DBSCAN.jpg" alt=""><br>根據上圖，分別來解釋這五條定義:</p>
+<p>不好懂對吧？所以我們來看作者另外給的例子：<br><img src="/images/2018/02/05/DBSCAN.jpg" alt=""><br>根據上圖，分別來解釋這五條定義:</p>
 <ol>
 <li>以某個資料樣本點作為圓心，以 e 為半徑畫圓，每個圓所圈的區域就是 e 鄰域。直觀上來說，有多少個資料樣本點，就有多少個鄰域</li>
 <li>核心物件的概念還需要強化一下，數學形式的定義如下︰ N?(p)={q(屬於)D|dist(p,q)≦e} ，且 p(屬於)N?(p),|N?(p)|≧MinPts ，滿足上述兩個條件的p為核心物件。從同圖中來說，假設MinPts是3，紅色的點都屬于核心物件</li>

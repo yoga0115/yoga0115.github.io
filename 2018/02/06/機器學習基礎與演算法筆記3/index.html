@@ -107,7 +107,7 @@
 <meta property="og:image" content="http://yoursite.com/images/2018/02/06/bagtree.PNG">
 <meta property="og:image" content="http://yoursite.com/images/2018/02/06/Ada.PNG">
 <meta property="og:image" content="http://yoursite.com/images/2018/02/06/semi.PNG">
-<meta property="og:updated_time" content="2018-02-06T16:46:47.687Z">
+<meta property="og:updated_time" content="2018-02-07T15:12:59.697Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="機器學習基礎與演算法筆記3">
 <meta name="twitter:description" content="陳彥呈博士＠人工智慧學校第三部分的主題：Classification">
@@ -422,8 +422,8 @@
 <li>SVMs do not directly provide probability estimates, these are calculated using an expensive five-fold cross-validation.</li>
 </ol>
 <h4 id="Decision-Tree-Classifier"><a href="#Decision-Tree-Classifier" class="headerlink" title="Decision Tree Classifier"></a>Decision Tree Classifier</h4><p>目的在找出一個分錯的誤差<font color="FF0000">最小的</font>結果<br>最能有效分開（information gain最小）<br>Ensembles ：一群classifiers的組合</p>
-<p>Bootstrap Aggregating (Bagging)<br>利用有限的ＤＡＴＡ幫助自己學出一個更好的ＣＬＡＳＳＩＦＩＥＲ<br>每一個Si訓練出一個弱的ＣＬＡＳＳＩ<br>隨機取樣Ｓ，取出放回，所以有可能會在娶到一樣的ＳＡＭＰＬＥ，最後大概會有63%取道unique的example</p>
-<p>學習演算法的穩定度<br>對於ＢＡＧＧＩＮＧ來說<br>穩定沒有太大幫助（ＳＶＭ）<br>不穩定的好處與壞處（ＤＴＲＥＥ）<br>會讓每一個學出來的ＴＲＥＥ會有一定程度上的差異，這些差異會有辦法幫助最後的結論</p>
+<p>Bootstrap Aggregating (Bagging)<br>利用有限的DATA幫助自己學出一個更好的Classifier<br>每一個Si訓練出一個弱的Classifier<br>隨機取樣S(Sample)，取出放回，所以有可能會在取到一樣的Sample，最後大概會有63%取道unique的Sample</p>
+<p>學習演算法的穩定度<br>對於Bagging來說<br>穩定沒有太大幫助(SVM)<br>不穩定的好處與壞處(Decision Tree)<br>會讓每一個學出來的Tree會有一定程度上的差異，這些差異會有辦法幫助最後的結論</p>
 <p>這麼講還是不知道在幹嘛？我們來看看圖<br>如果我們今天用一個tree來訓練，結果可能很醜<br>但如果我們做了100次？<br><img src="/images/2018/02/06/bagtree.PNG" alt=""></p>
 <p>Boosting<br>在bagging的時候每個分類氣都是獨立的，<br>但boosting會依次訓練，如果前面的分類氣表現不好的時候，下一個訓練就會用更好的方式去訓練，所以他頓於一些困難的資料給予的權重是比較高的<br>所謂困難的資料就是比較難分的資料</p>
 <p>Adaboost<br>訓練曾數的增加會使他的error成指數下降的<br><img src="/images/2018/02/06/Ada.PNG" alt=""></p>
